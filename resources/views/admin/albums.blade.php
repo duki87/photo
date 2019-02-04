@@ -48,9 +48,9 @@
       <hr style="background-color: yellow; height: 1px; border: 0;">
     </div>
     @foreach($albums as $album)
-    <div class="col-md-3 mt-2">
+    <div class="col-md-3 mt-2 d-flex align-items-stretch">
       <div class="card" style="background-color:rgba(255,255,255,0.2)">
-        <img src="{{asset('img/album_covers/'.$album->cover)}}" class="card-img-top" alt="...">
+        <img src="{{asset('img/album_covers/'.$album->cover)}}" class="card-img-top" height="100%" width="auto"  alt="...">
         <div class="card-body">
           <h5 class="card-title" style="color:yellow">{{$album->title}}</h5>
           <p class="card-text" style="color:white">{{$album->description}}</p>

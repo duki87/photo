@@ -34,4 +34,5 @@ Route::group(['middleware' => 'auth'], function() {
   // Route::post('/edit-album/remove-cover-photo', 'AlbumController@remove_cover');
   Route::post('/admin-area/add-new-album', 'AlbumController@store')->name('admin.add-new-album');
   Route::get('/admin-area/shootings', 'ShootingController@index')->name('admin.shootings');
+  Route::get('/admin-area/change-shooting-status/{id}', 'ShootingController@change_status')->name('admin.change-shooting-status');
 });

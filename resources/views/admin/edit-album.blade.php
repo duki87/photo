@@ -42,9 +42,7 @@
       <span style="color:yellow">Preview Cover</span>
       <div class="" id="preview_cover" style="position:relative">
         <img src="{{asset('img/album_covers/'.$album->cover)}}" class="" id="image" alt="" style="position:relative;border:1px solid yellow; width:100%; height:auto">
-
         <button class="btn btn-danger btn-xs remove_image {{ $album->cover == 'default.jpg' ? 'd-none' : ''}}" id="remove_image" data-path="{{$album->cover}}" style="position:absolute; right:30px; top:20px">x</button>
-
       </div>
     </div>
   </div>
@@ -70,16 +68,9 @@
         $('#message_images').html('<span class="text-danger">'+error_images+'</span>');
         return false;
       } else {
-        if($('#cover').val() !== '') {
-          var path = $('#cover').val();
-          if(path !== 'default.jpg') {
-            remove_cover_photo(path);
-            $('#preview_cover').html('');
-            $('#cover').val('');
-          } else {
-            $('#preview_cover').html('');
-            $('#cover').val('');
-          }
+        var cover = $('#cover').val();
+        if(cover !== 'default.jpg') {
+          remove_cover_photo(cover);
         }
         var form_data = new FormData();
         form_data.append('album_cover', property);
@@ -98,7 +89,7 @@
            processData: false,
            success: function(result) {
              var remove = '<button class="btn btn-danger btn-xs remove_image" id="remove_image" data-path="'+ result.filename+'" style="position:absolute; right:30px; top:20px">x</button>';
-             $('#preview_cover').append('<img src="'+ result.image_path +'" class="" id="image" alt="" style="position:relative;border:1px solid yellow; width:100%; height:auto">');
+             $('#preview_cover').html('<img src="'+ result.image_path +'" class="" id="image" alt="" style="position:relative;border:1px solid yellow; width:100%; height:auto">');
              $('#preview_cover').append(remove);
              $('#message_images').removeClass('d-none');
              $('#message_images').html('<span class="text-success">Image uploaded.</span>');
@@ -124,7 +115,7 @@
          cache: false,
          processData: false,
          success: function(result) {
-           $('#preview_cover').remove();
+           $('#preview_cover').html();
            $('#album_cover').val('');
            $('#message_images').html('<span class="text-success">Image removed.</span>');
            $('#cover').val('');
@@ -132,7 +123,7 @@
        });
     }
 
-    $(document).on('click', '.remove_image', function(event) {
+    $(document).on('click', '#remove_image', function(event) {
       event.preventDefault();
       var path = $(this).attr('data-path');
       remove_cover_photo(path);

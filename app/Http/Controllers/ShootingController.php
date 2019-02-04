@@ -14,7 +14,7 @@ class ShootingController extends Controller
      */
     public function index() {
         $shootings = Shooting::paginate(5);
-        return view('admin.shootings', ['shootings' => $shootings]);
+        return view('admin.shootings', ['shootings' => $shootings, 'page_name' => 'shootings']);
     }
 
     /**
@@ -37,6 +37,26 @@ class ShootingController extends Controller
         }
     }
 
+    public static function number_of_requests() {
+      $shootings = Shooting::where(['status' => 1])->count();
+      if($shootings > 0) {
+        echo '<span class="badge badge-danger">'.$shootings.'</span>';
+      } else {
+        echo '';
+      }
+    }
+
+
+    public function change_status($id) {
+      $shooting = Shooting::where(['id' => $id])->first();
+      if($shooting['status'] == 1) {
+        Shooting::where(['id' => $id])->update(['status' => 0]);
+        return redirect()->back()->with(['shooting_message' => 'Oznaceno kao procitano']);
+      } else {
+        Shooting::where(['id' => $id])->update(['status' => 1]);
+        return redirect()->back()->with(['shooting_message' => 'Oznaceno kao neprocitano']);
+      }
+    }
     /**
      * Store a newly created resource in storage.
      *

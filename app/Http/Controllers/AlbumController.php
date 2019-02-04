@@ -15,7 +15,7 @@ class AlbumController extends Controller
      */
     public function index() {
       $albums = Album::get();
-      return view('admin.albums')->with(['albums' => $albums]);
+      return view('admin.albums')->with(['albums' => $albums, 'page_name' => 'albums']);
     }
 
     /**
@@ -71,7 +71,7 @@ class AlbumController extends Controller
     public function edit($id)
     {
       $album = Album::where(['id' => $id])->first();
-      return view('admin.edit-album')->with(['album' => $album]);
+      return view('admin.edit-album')->with(['album' => $album, 'page_name' => 'edit-album']);
     }
 
     /**
