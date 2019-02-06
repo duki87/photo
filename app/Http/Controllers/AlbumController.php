@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Album;
 use Illuminate\Http\Request;
 use Session;
+use Storage;
+use Illuminate\Support\Facades\File;
 
 class AlbumController extends Controller
 {
@@ -45,10 +47,17 @@ class AlbumController extends Controller
         $album->title = $request->title;
         $album->description = $request->description;
         $album->cover = $cover;
+        $this->make_album_folder($request->title);
 
         if($album->save()) {
           return redirect()->back()->with(['album_message' => 'Album '.$request->title.' added.']);
         }
+    }
+
+    private function make_album_folder($album_name) {
+      //$directory = public_path().'/img/albums/'.$album_name;
+      //Storage::makeDirectory($directory, 0777);
+      File::makeDirectory(public_path().'/img/albums/'.$album_name,0777,true);
     }
 
     /**

@@ -24,7 +24,7 @@ Auth::routes();
 //Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => 'auth'], function() {
   Route::get('/admin-area', 'HomeController@index')->name('admin.index');
-  Route::get('/admin-area/add-photos', 'HomeController@add_photos')->name('admin.add-photos');
+  Route::get('/admin-area/add-photos', 'PhotoController@index')->name('admin.add-photos');
 
   Route::get('/admin-area/albums', 'AlbumController@index')->name('admin.albums');
   Route::get('/admin-area/edit-album/{id}', 'AlbumController@edit')->name('admin.edit-album');
@@ -35,4 +35,5 @@ Route::group(['middleware' => 'auth'], function() {
   Route::post('/admin-area/add-new-album', 'AlbumController@store')->name('admin.add-new-album');
   Route::get('/admin-area/shootings', 'ShootingController@index')->name('admin.shootings');
   Route::get('/admin-area/change-shooting-status/{id}', 'ShootingController@change_status')->name('admin.change-shooting-status');
+  Route::post('/admin-area/upload-photos', 'PhotoController@store')->name('admin.upload-photos');
 });

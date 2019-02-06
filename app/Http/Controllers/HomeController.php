@@ -25,8 +25,4 @@ class HomeController extends Controller
         return view('admin.index');
     }
 
-    public function add_photos()
-    {
-        return view('admin.add-photos');
-    }
 }

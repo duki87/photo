@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Photo;
+use App\Album;
 use Illuminate\Http\Request;
+use Storage;
+use Illuminate\Support\Facades\File;
 
 class PhotoController extends Controller
 {
@@ -12,9 +15,9 @@ class PhotoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+      $albums = Album::get();
+      return view('admin.add-photos')->with(['page_name' => 'add-photos', 'albums' => $albums]);
     }
 
     /**
@@ -33,9 +36,23 @@ class PhotoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+      $imagesArr = array();
+      $extArray = ['jpg', 'gif', 'png', 'tiff'];
+      $dir_id =
+      $album = Album::where(['id' => $request->album])->first();
+      $directory = $album->title;
+      $images = $request->file('images');
+      foreach($images as $image){
+        $tmp_name = $image->getClientOriginalName();
+        $extension = $image->getClientOriginalExtension();
+        if(!in_array($extension, $extArray)) {
+          continue;
+        }
+        $storagePath = Storage::disk('uploads')->put($directory, $image);
+        $imagesArr[] = basename($storagePath);
+      }
+      return response()->json(['images' => $imagesArr]);
     }
 
     /**

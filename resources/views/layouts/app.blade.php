@@ -41,15 +41,19 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
+                    @if(isset($page_name))
                     <ul class="navbar-nav mr-auto">
                       <li class="nav-item">
                           <a class="nav-link {{'albums'==$page_name?'active':''}}" href="{{ route('admin.albums') }}">Albumi</a>
                       </li>
                       <li class="nav-item">
+                          <a class="nav-link {{'add-photos'==$page_name?'active':''}}" href="{{ route('admin.add-photos') }}">Dodaj fotografije</a>
+                      </li>
+                      <li class="nav-item">
                           <a class="nav-link {{'shootings'==$page_name?'active':''}}" href="{{ route('admin.shootings') }}">Zahtevi {{App\Http\Controllers\ShootingController::number_of_requests()}}</a>
                       </li>
                     </ul>
-
+                    @endif
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
 
