@@ -36,4 +36,5 @@ Route::group(['middleware' => 'auth'], function() {
   Route::get('/admin-area/shootings', 'ShootingController@index')->name('admin.shootings');
   Route::get('/admin-area/change-shooting-status/{id}', 'ShootingController@change_status')->name('admin.change-shooting-status');
   Route::post('/admin-area/upload-photos', 'PhotoController@store')->name('admin.upload-photos');
+  Route::post('/admin-area/remove-photo', 'PhotoController@destroy')->name('admin.remove-photo');
 });

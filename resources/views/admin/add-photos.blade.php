@@ -35,18 +35,10 @@
             <p id="message_images" class="text-danger d-none"></p>
           </div>
         </div>
-        <div class="col-md-4 mt-2 d-flex align-items-stretch">
-          <div class="card" style="background-color:rgba(255,255,255,0.3)">
-            <img class="card-img-top" src="..." alt="">
-            <div class="card-body">
-              <input type="text" class="form-control mt-2" name="title[]" id="title" value="" placeholder="Naziv">
-              <input type="text" class="form-control mt-2" name="location[]" id="location" value="" placeholder="Lokacija">
-              <textarea class="form-control mt-2" name="description[]" id="location" value="" placeholder="Opis"></textarea>
-              <input type="hidden" class="form-control" name="filename[]" id="filename" value="">
-              <a href="#" class="btn btn-danger mt-2" style="width:100%"  ><i class="fas fa-times-circle"></i> Izbaci</a>
-            </div>
-          </div>
+        <div id="preview" class="row">
+
         </div>
+
        <div class="form-group">
          <button type="submit" class="btn btn-success mt-5" name="submit">Dodaj fotografije</button>
        </div>
@@ -57,6 +49,8 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
+
+    //upload photos
     $(document).on('change', '#photos', function(e) {
       e.preventDefault();
       var files = $(this)[0].files;
@@ -85,7 +79,45 @@
          cache: false,
          processData: false,
          success: function(result) {
-           console.log(result.files);
+           $('#preview').append(result.cards);
+         }
+       });
+    });
+
+    //remove specified photo
+    $(document).on('click', '.remove-photo', function(e) {
+      e.preventDefault();
+      var photo = $(this).attr('data-photo');
+      var album = $(this).attr('data-album');
+      var id = $(this).parent().parent().parent().attr('id');
+      console.log(id);
+      const form_data = new FormData();
+      if(album == '') {
+        $('#message_images').removeClass('d-none');
+        $('#message_images').html('Prvo odaberite album!');
+        return false;
+      }
+      form_data.append('photo', photo);
+      form_data.append('album', album);
+      $.ajaxSetup({
+         headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         }
+     });
+      $.ajax({
+         url: "remove-photo",
+         type: "POST",
+         data: form_data,
+         dataType: 'json',
+         contentType: false,
+         cache: false,
+         processData: false,
+         success: function(result) {
+           if(result.success == 'PHOTO_REMOVE') {
+             $('#message_images').removeClass('d-none');
+             $('#message_images').html('Fotografija obrisana');
+             $('#'+id).remove();
+           }
          }
        });
     });
