@@ -4,7 +4,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h2 style="color:white">Dodaj fotografije</h2>
+      <h2 style="color:white">Izmeni fotografije</h2>
       <div class="" id="message">
         @if(Session::has('photo_message'))
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -18,36 +18,56 @@
       <hr style="background-color: yellow; height: 1px; border: 0;">
     </div>
     <div class="col-md-12">
-      <form id="add-photos" action="{{route('admin.insert-photos')}}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div class="form-group col-md-6">
-          <select name="album" id="album" class="form-control" required>
-            <option value="">Izaberite album</option>
-            @foreach($albums as $album)
-              <option value="{{$album->id}}">{{$album->title}}</option>
-            @endforeach
-          </select>
+      <div id="preview" class="row">
+      @foreach($photos as $photo)
+        <div class="col-md-2">
+          <a href="" type="" class="details" data-toggle="modal" data-target="#details{{$photo->id}}"><img src="{{asset('img/albums/'.$album.'/'.$photo['filename'])}}" alt="..." class="img-thumbnail"></a>
         </div>
-        <div class="form-group col-md-6">
-          <div class="custom-file">
-            <input type="hidden" name="album" value="" id="album-name">
-            <input type="file" class="custom-file-input" id="photos" name="photos[]" multiple>
-            <label class="custom-file-label" for="customFile">Izaberite fotografije</label>
-            <button type="button" name="button" class="btn btn-danger btn-sm mt-2 d-none" id="remove-all">Izbrisi sve ucitane fotografije</button>
-            <p id="message_images" class="text-danger d-none"></p>
-          </div>
-        </div>
-        <div id="preview" class="row">
-
-        </div>
-
-       <div class="form-group">
-         <button type="submit" class="btn btn-success mt-5" name="submit">Dodaj fotografije</button>
-       </div>
-     </form>
+      @endforeach
+      </div>
     </div>
   </div>
 </div>
+
+<!-- Modal -->
+@foreach($photos as $photo)
+<div class="modal fade" id="details{{$photo->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form class="" action="index.html" method="post">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><img src="{{asset('img/albums/'.$album.'/'.$photo->filename)}}" width="70px" alt="..." class="img-thumbnail"> Izmeni fotografiju</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <input type="text" name="title" id="title" class="form-control title" value="{{$photo->title}}">
+          </div>
+          <div class="form-group">
+            <textarea name="description" id="description" class="form-control description">{{$photo->description}}</textarea>
+          </div>
+          <div class="form-group">
+            <input type="text" name="location" id="location" class="form-control location" value="{{$photo->location}}">
+          </div>
+          <div class="form-group">
+            <select class="form-control album" id="album" name="album" value="{{$photo->album}}">
+              @foreach($albums as $album)
+                <option <?=($album->id == $photo->album ? 'selected' : '');?> value="{{$album->id}}">{{$album->title}}</option>
+              @endforeach
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success" data-dismiss="modal">Izmeni</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+@endforeach
 
 <script type="text/javascript">
   $(document).ready(function() {

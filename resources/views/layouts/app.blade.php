@@ -52,6 +52,9 @@
                       <li class="nav-item">
                           <a class="nav-link {{'shootings'==$page_name?'active':''}}" href="{{ route('admin.shootings') }}">Zahtevi {{App\Http\Controllers\ShootingController::number_of_requests()}}</a>
                       </li>
+                      <li class="nav-item">
+                          <a class="nav-link {{'cleaner'==$page_name?'active':''}}" href="{{ route('admin.cleaner') }}">Ocisti foldere</a>
+                      </li>
                     </ul>
                     @endif
                     <!-- Right Side Of Navbar -->

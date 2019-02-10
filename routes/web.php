@@ -37,4 +37,9 @@ Route::group(['middleware' => 'auth'], function() {
   Route::get('/admin-area/change-shooting-status/{id}', 'ShootingController@change_status')->name('admin.change-shooting-status');
   Route::post('/admin-area/upload-photos', 'PhotoController@store')->name('admin.upload-photos');
   Route::post('/admin-area/remove-photo', 'PhotoController@destroy')->name('admin.remove-photo');
+  Route::post('/admin-area/remove-uploads', 'PhotoController@remove_uploads')->name('admin.remove-uploads');
+  Route::get('/admin-area/cleaner', 'PhotoController@cleaner')->name('admin.cleaner');
+  Route::get('/admin-area/edit-photos/{album_id}', 'PhotoController@edit_photos')->name('admin.edit-photos');
+  Route::post('/admin-area/clean-folder', 'PhotoController@clean_folder')->name('admin.clean-folder');
+  Route::post('/admin-area/insert-photos', 'PhotoController@create')->name('admin.insert-photos');
 });
