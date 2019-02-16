@@ -16,7 +16,7 @@
 // });
 Route::get('/', 'FrontController@index')->name('front.index');
 Route::get('/albums', 'FrontController@albums')->name('front.albums');
-Route::get('/gallery/{id}', 'FrontController@gallery')->name('front.gallery');
+Route::get('/albums/{id}', 'FrontController@gallery')->name('front.gallery');
 
 Route::post('/add-shooting', 'ShootingController@create')->name('front.add-shooting');
 
@@ -34,6 +34,7 @@ Route::group(['middleware' => 'auth'], function() {
   Route::post('/admin-area/remove-cover-photo', 'AlbumController@remove_cover')->name('admin.remove-cover-photo');
   // Route::post('/edit-album/remove-cover-photo', 'AlbumController@remove_cover');
   Route::post('/admin-area/add-new-album', 'AlbumController@store')->name('admin.add-new-album');
+  Route::get('/admin-area/remove-album/{id}', 'AlbumController@destroy')->name('admin.remove-album');
   Route::get('/admin-area/shootings', 'ShootingController@index')->name('admin.shootings');
   Route::get('/admin-area/change-shooting-status/{id}', 'ShootingController@change_status')->name('admin.change-shooting-status');
   Route::post('/admin-area/upload-photos', 'PhotoController@store')->name('admin.upload-photos');

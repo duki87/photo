@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Album;
+use App\Photo;
 use Illuminate\Http\Request;
 use Session;
 use Storage;
@@ -112,9 +113,15 @@ class AlbumController extends Controller
      * @param  \App\Album  $album
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Album $album)
-    {
-        //
+    public function destroy($id) {
+      $photos = Photo::where(['album' => $id])->delete();
+      $album = Album::where(['id' => $id])->first();
+      $title = $album->title;
+      $album->delete();
+      $folder_remove = Storage::disk('uploads')->deleteDirectory($title);
+      if($folder_remove) {
+        return redirect('/admin-area/albums')->with(['album_message' => 'Album '.$title.' sa svim fotografijama je obrisan.']);
+      }
     }
 
     public function preview_cover(Request $request) {

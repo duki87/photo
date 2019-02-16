@@ -9,9 +9,15 @@
     <div class="row">
 
       @foreach($albums as $album)
-        <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+        <div class="col-lg-3 col-md-4 col-xs-6 album">
           <a href="{{ route('front.gallery', $album->id) }}" class="" rel="">
             <img src="{{asset('img/album_covers/'.$album->cover)}}" alt="..." class="rounded mx-auto d-block" style="width: 100%; height: 100%; object-fit: cover;">
+            <div class="overlay">
+              <div class="text text-center">
+                <b>{{$album->title}}</b><br>
+                {{$album->description}}
+              </div>
+            </div>
           </a>
         </div>
       @endforeach

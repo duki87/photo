@@ -50,12 +50,12 @@
     @foreach($albums as $album)
     <div class="col-md-4 mt-2 d-flex align-items-stretch">
       <div class="card" style="background-color:rgba(255,255,255,0.2)">
-        <img src="{{asset('img/album_covers/'.$album->cover)}}" class="card-img-top" height="100%" width="auto"  alt="...">
+        <img src="{{asset('img/album_covers/'.$album->cover)}}" class="card-img-top" height="100%" width="auto"  alt="..." style="object-fit:cover">
         <div class="card-body">
           <h5 class="card-title" style="color:yellow">{{$album->title}}</h5>
-          <p class="card-text" style="color:white">{{$album->description}}</p>
           <a href="{{route('admin.edit-album', $album->id)}}" class="btn btn-info d-inline">Izmeni album</a>
           <a href="{{route('admin.edit-photos', $album->id)}}" class="btn btn-primary d-inline">Izmeni slike</a>
+          <a href="{{route('admin.remove-album', $album->id)}}" class="btn btn-danger d-inline">Obrisi album</a>
         </div>
       </div>
     </div>

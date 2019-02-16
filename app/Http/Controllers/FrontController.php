@@ -17,7 +17,12 @@ class FrontController extends Controller
   }
 
   public function albums() {
-    $albums = Album::get();
+    $albums = Album::with('photos')->get();
+    foreach ($albums as $key => $album) {
+      if(count($album->photos) < 1) {
+        unset($albums[$key]);
+      }
+    }
     return view('albums')->with(['page_name' => 'albums', 'albums' => $albums]);
   }
 }

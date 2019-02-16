@@ -60,6 +60,7 @@ class PhotoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+      $watermark = ('img/watermark.png');
       $imagesArr = array();
       $cardArr = array();
       $extArray = ['jpg', 'gif', 'png', 'tiff', 'jpeg'];
@@ -70,32 +71,39 @@ class PhotoController extends Controller
       foreach($images as $image){
         $tmp_name = $image->getClientOriginalName();
         $extension = $image->getClientOriginalExtension();
+        $name = substr( base_convert( time(), 10, 36 ) . md5( microtime() ), 0, 16 ).'.'.$extension;
         if(!in_array($extension, $extArray)) {
           continue;
         }
         $photo = Image::make($image)
                   ->resize(1024, null, function ($constraint) {
                     $constraint->aspectRatio();
-                  })->encode('jpg',80);
+                  })
+                  ->insert($watermark, 'bottom-left', 10, 10)
+                  ->save('img/albums/'.$directory.'/'.$name);
 
-        $storagePath = Storage::disk('uploads')->put($directory, $photo);
-        $imagesArr[] = basename($storagePath);
-        $tmp_namee = explode('.', basename($storagePath));
+        //Try to find out how to implement upload using storage facade - there is
+        //a problem to store image this way after using image intervention
+
+        //$storagePath = Storage::disk('uploads')->put($directory, $photo);
+        //$imagesArr[] = basename($storagePath);
+        $imagesArr[] = $name;
+        $tmp_namee = explode('.', $name);
         $id = $tmp_namee[0];
         $cardArr[] = '<div class="col-md-4 mt-2" id="'.$id.'">
                        <div class="card" style="background-color:rgba(255,255,255,0.3)" style="width:100%">
-                         <img class="card-img-top" src="'.asset('img/albums/'.$directory.'/'.basename($storagePath)).'" alt="" style="width:100%">
+                         <img class="card-img-top" src="'.asset('img/albums/'.$directory.'/'.$name).'" alt="" style="width:100%">
                          <div class="card-body">
                            <input type="text" class="form-control mt-2" name="title[]" id="title" value="" placeholder="Naziv">
                            <input type="text" class="form-control mt-2" name="location[]" id="location" value="" placeholder="Lokacija">
                            <textarea class="form-control mt-2" name="description[]" id="location" value="" placeholder="Opis"></textarea>
-                           <input type="hidden" class="form-control filenames" name="filename[]" id="filename" value="'.basename($storagePath).'">
-                           <a href="'.route('admin.remove-photo').'" class="btn btn-danger mt-2 remove-photo" data-photo="'.basename($storagePath).'" data-album="'.$directory.'" style="width:100%"  ><i class="fas fa-times-circle"></i> Izbaci</a>
+                           <input type="hidden" class="form-control filenames" name="filename[]" id="filename" value="'.$name.'">
+                           <a href="'.route('admin.remove-photo').'" class="btn btn-danger mt-2 remove-photo" data-photo="'.$name.'" data-album="'.$directory.'" style="width:100%"  ><i class="fas fa-times-circle"></i> Izbaci</a>
                          </div>
                        </div>
                      </div>';
       }
-      //return response()->json(['cards' => $cardArr, 'imagesArr' => $imagesArr]);
+      return response()->json(['cards' => $cardArr, 'imagesArr' => $imagesArr]);
     }
 
     /**
