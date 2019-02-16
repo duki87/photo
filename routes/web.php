@@ -15,7 +15,8 @@
 //     return view('index');
 // });
 Route::get('/', 'FrontController@index')->name('front.index');
-Route::get('/gallery', 'FrontController@gallery')->name('front.gallery');
+Route::get('/albums', 'FrontController@albums')->name('front.albums');
+Route::get('/gallery/{id}', 'FrontController@gallery')->name('front.gallery');
 
 Route::post('/add-shooting', 'ShootingController@create')->name('front.add-shooting');
 

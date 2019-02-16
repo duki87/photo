@@ -7,6 +7,7 @@ use App\Album;
 use Illuminate\Http\Request;
 use Storage;
 use Illuminate\Support\Facades\File;
+use Image;
 
 class PhotoController extends Controller
 {
@@ -72,7 +73,12 @@ class PhotoController extends Controller
         if(!in_array($extension, $extArray)) {
           continue;
         }
-        $storagePath = Storage::disk('uploads')->put($directory, $image);
+        $photo = Image::make($image)
+                  ->resize(1024, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                  })->encode('jpg',80);
+
+        $storagePath = Storage::disk('uploads')->put($directory, $photo);
         $imagesArr[] = basename($storagePath);
         $tmp_namee = explode('.', basename($storagePath));
         $id = $tmp_namee[0];
@@ -89,7 +95,7 @@ class PhotoController extends Controller
                        </div>
                      </div>';
       }
-      return response()->json(['cards' => $cardArr, 'imagesArr' => $imagesArr]);
+      //return response()->json(['cards' => $cardArr, 'imagesArr' => $imagesArr]);
     }
 
     /**

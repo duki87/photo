@@ -20,7 +20,7 @@
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <a href="index.html" class="navbar-brand" style="width:60%">
-        <img src="img/logo-2.png" class="img-fluid" alt="">
+        <img src="{{asset('img/logo-2.png')}}" class="img-fluid" alt="">
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
         <i class="lnr lnr-menu"></i>
@@ -38,7 +38,7 @@
           <a class="nav-link page-scroll" href="#portfolios">Works</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link page-scroll {{ 'gallery' == $page_name ? 'active' : '' }}" href="{{route('front.gallery')}}">Galerija</a>
+          <a class="nav-link page-scroll {{ 'albums' == $page_name ? 'active' : '' }}" href="{{route('front.albums')}}">Galerije slika</a>
         </li>
         <li class="nav-item">
           <a class="nav-link page-scroll" href="#contact">Contact</a>
