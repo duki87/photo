@@ -4,7 +4,6 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h2 style="color:white">Add New Album</h2>
       <div class="" id="message">
         @if(Session::has('album_message'))
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -15,36 +14,10 @@
         </div>
         @endif
       </div>
-      <hr style="background-color: yellow; height: 1px; border: 0;">
     </div>
-    <div class="col-md-6">
-      <form id="add-album" action="{{route('admin.add-new-album')}}" method="POST">
-        @csrf
-        <div class="form-group">
-          <input type="text" name="title" id="title" class="form-control" placeholder="Add Album Title" value="" required>
-        </div>
-        <div class="form-group">
-          <textarea name="description" id="description" class="form-control" placeholder="Add Album Description" value=""></textarea>
-        </div>
-       <div class="custom-file">
-         <input type="file" class="custom-file-input" id="album_cover" name="album_cover">
-         <input type="hidden" id="cover" name="cover" name="" value="">
-         <label class="custom-file-label" for="customFile">Choose Album Cover</label>
-         <p id="message_images" class="text-danger d-none"></p>
-       </div>
-       <div class="form-group">
-         <button type="submit" class="btn btn-success mt-5" name="submit">Add Album</button>
-       </div>
-     </form>
-    </div>
-    <div class="col-md-6">
-      <span style="color:yellow">Preview Cover</span>
-      <div class="" id="preview_cover" style="position:relative">
 
-      </div>
-    </div>
     <div class="col-md-12">
-      <h2 style="color:white">All Albums</h2>
+      <h2 style="color:white">Svi albumi</h2>
       <hr style="background-color: yellow; height: 1px; border: 0;">
     </div>
     @foreach($albums as $album)
@@ -52,10 +25,12 @@
       <div class="card" style="background-color:rgba(255,255,255,0.2)">
         <img src="{{asset('img/album_covers/'.$album->cover)}}" class="card-img-top" height="100%" width="auto"  alt="..." style="object-fit:cover">
         <div class="card-body">
-          <h5 class="card-title" style="color:yellow">{{$album->title}}</h5>
-          <a href="{{route('admin.edit-album', $album->id)}}" class="btn btn-info d-inline">Izmeni album</a>
-          <a href="{{route('admin.edit-photos', $album->id)}}" class="btn btn-primary d-inline">Izmeni slike</a>
-          <a href="{{route('admin.remove-album', $album->id)}}" class="btn btn-danger d-inline">Obrisi album</a>
+          <h3 class="card-title d-inline" style="color:yellow">{{$album->title}}</h3><h5 class="text-secondary d-inline"> Broj fotografija {{count($album->photos)}}</h5> <br>
+          <div class="mt-2">
+            <a href="{{route('admin.edit-album', $album->id)}}" class="btn btn-primary d-inline" title="Izmeni informacije o albumu"><i class="fas fa-edit"></i></a>
+            <a href="{{route('admin.edit-photos', $album->id)}}" class="btn btn-warning d-inline" title="Izmeni fotografije u albumu"><i class="far fa-images"></i></a>
+            <a href="{{route('admin.remove-album', $album->id)}}" class="btn btn-danger d-inline" title="Obrisi album" onclick="return confirm('Da li ste sigurni da zelite da obrisete ovaj album?')"><i class="fas fa-trash-alt"></i></a>
+          </div>
         </div>
       </div>
     </div>
@@ -63,83 +38,4 @@
   </div>
 </div>
 
-<script type="text/javascript">
-  $(document).ready(function() {
-    $(document).on('change', '#album_cover', function(event) {
-      event.preventDefault();
-      var property = document.getElementById('album_cover').files[0];
-      var image_name = property.name;
-      var image_extension = image_name.split('.').pop().toLowerCase();
-      if(jQuery.inArray(image_extension, ["jpg","jpeg","png","gif"]) == -1) {
-        error_images = 'Allowed formats: gif, jpg, jpeg, png!';
-        $('#message_images').html('<span class="text-danger">'+error_images+'</span>');
-        return false;
-      }
-      var image_size = property.size;
-      if(image_size > 5000000) {
-        error_images = 'Maximum file size: 5 MB!';
-        $('#message_images').html('<span class="text-danger">'+error_images+'</span>');
-        return false;
-      } else {
-        if($('#cover').val() !== '') {
-          var path = $('#remove_image').attr('data-path');
-          remove_cover_photo(path);
-        }
-        var form_data = new FormData();
-        form_data.append('album_cover', property);
-        $.ajaxSetup({
-           headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-           }
-       });
-        $.ajax({
-           url: "add-cover-photo",
-           type: "POST",
-           data: form_data,
-           dataType: 'json',
-           contentType: false,
-           cache: false,
-           processData: false,
-           success: function(result) {
-             var remove = '<button class="btn btn-danger btn-xs remove_image" id="remove_image" data-path="'+ result.filename+'" style="position:absolute; right:30px; top:20px">x</button>';
-             $('#preview_cover').html('<img src="'+ result.image_path +'" class="" id="image" alt="" style="position:relative;border:1px solid yellow; width:100%; height:auto">');
-             $('#preview_cover').append(remove);
-             $('#message_images').html('<span class="text-success">Image uploaded.</span>');
-             $('#cover').val(result.filename);
-           }
-         });
-      }
-    });
-
-    function remove_cover_photo(filename) {
-      var form_data = new FormData();
-      form_data.append('path', filename);
-      $.ajaxSetup({
-         headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-         }
-     });
-      $.ajax({
-         url: "remove-cover-photo",
-         type: "POST",
-         data: form_data,
-         contentType: false,
-         cache: false,
-         processData: false,
-         success: function(result) {
-           $('#preview_cover').remove();
-           $('#album_cover').val('');
-           $('#message_images').html('<span class="text-success">Image removed.</span>');
-           $('#cover').val('');
-         }
-       });
-    }
-
-    $(document).on('click', '.remove_image', function(event) {
-      event.preventDefault();
-      var path = $(this).attr('data-path');
-      remove_cover_photo(path);
-    });
-  });
-</script>
 @endsection

@@ -42,7 +42,7 @@
         </div>
 
        <div class="form-group">
-         <button type="submit" class="btn btn-success mt-5" name="submit">Dodaj fotografije</button>
+         <button type="submit" id="submit-btn" class="btn btn-success mt-5 d-none" name="submit">Dodaj fotografije</button>
        </div>
      </form>
     </div>
@@ -83,6 +83,7 @@
          success: function(result) {
            $('#preview').append(result.cards);
            $('#remove-all').removeClass('d-none');
+           $('#submit-btn').removeClass('d-none');
            console.log(photosArr());
          }
        });

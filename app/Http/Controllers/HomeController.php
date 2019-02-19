@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,12 @@ class HomeController extends Controller
      */
     public function index() {
         return view('admin.index')->with(['page_name' => 'index']);
+    }
+
+    public function profile() {
+        $id = Auth::user()->id;
+        $admin = User::where(['id' => $id])->first();
+        return view('admin.profile')->with(['page_name' => 'profile', 'admin' => $admin]);
     }
 
 }

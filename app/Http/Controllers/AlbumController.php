@@ -17,8 +17,12 @@ class AlbumController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-      $albums = Album::get();
+      $albums = Album::with('photos')->get();
       return view('admin.albums')->with(['albums' => $albums, 'page_name' => 'albums']);
+    }
+
+    public function add_album() {
+      return view('admin.add-album')->with(['page_name' => 'add_album']);
     }
 
     /**
@@ -78,8 +82,7 @@ class AlbumController extends Controller
      * @param  \App\Album  $album
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
       $album = Album::where(['id' => $id])->first();
       return view('admin.edit-album')->with(['album' => $album, 'page_name' => 'edit-album']);
     }
@@ -98,7 +101,7 @@ class AlbumController extends Controller
       } else {
         $cover = $request->cover;
       }
-      $cover =
+      //$cover =
       Album::where(['id' => $request->id])->update([
         'title'=>$request->title,
         'description'=>$request->description,

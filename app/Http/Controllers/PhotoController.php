@@ -28,10 +28,37 @@ class PhotoController extends Controller
 
     public function edit_photos($album_id) {
       $albums = Album::get();
-      $album = Album::where(['id' => $album_id])->first();
+      $album = Album::where(['id' => $album_id])->with('photos')->first();
       $directory = $album->title;
-      $photos = Photo::where(['album'=>$album_id])->get();
-      return view('admin.edit-photos')->with(['page_name' => 'edit-photos', 'photos' => $photos, 'album'=>$directory, 'albums' => $albums]);
+      return view('admin.edit-photos')->with(['page_name' => 'edit-photos', 'directory' => $directory, 'album' => $album, 'albums' => $albums]);
+    }
+
+    public function update(Request $request){
+      $success = '';
+      $photo = Photo::where(['id' => $request->id])->first();
+      $old_album_id = $photo->album;
+      Photo::where(['id' => $request->id])->update([
+        'title'=>$request->title,
+        'description'=>$request->description,
+        'location'=>$request->location,
+        'album'=>$request->album
+      ]);
+      if($request->album != $old_album_id) {
+        $old_album = Album::where(['id' => $old_album_id])->first();
+        $new_album = Album::where(['id' => $request->album])->first();
+        $old_album_name = $old_album->title;
+        $new_album_name = $new_album->title;
+        Storage::disk('uploads')->move(
+          $old_album_name.'/'.$photo->filename,
+          $new_album_name.'/'.$photo->filename
+        );
+        $success = 'Fotogorafija je izmenjena i premestena iz albuma '.$old_album_name.' u album '.$new_album_name.'.';
+        $move = true;
+      } else {
+        $success = 'Podaci o fotogorafiji su uspesno izmenjeni.';
+        $move = false;
+      }
+      return response()->json(['success' => $success, 'move' => $move]);
     }
 
     /**
@@ -76,9 +103,9 @@ class PhotoController extends Controller
         if(!in_array($extension, $extArray)) {
           continue;
         }
-        if($extension == 'jpeg' || $extension == 'jpg') {
-          $geolocationArr[] = $this->read_gps_location($image);
-        }
+        // if($extension == 'jpeg' || $extension == 'jpg') {
+        //   $geolocationArr[] = $this->read_gps_location($image);
+        // }
         $photo = Image::make($image)
                   ->resize(1024, null, function ($constraint) {
                     $constraint->aspectRatio();
@@ -106,7 +133,7 @@ class PhotoController extends Controller
                        </div>
                      </div>';
       }
-      return response()->json(['cards' => $cardArr, 'imagesArr' => $imagesArr, 'geolocation' => $geolocationArr]);
+      return response()->json(['cards' => $cardArr, 'imagesArr' => $imagesArr]);
     }
 
     /**
@@ -126,10 +153,6 @@ class PhotoController extends Controller
      * @param  \App\Photo  $photo
      * @return \Illuminate\Http\Response
      */
-    public function edit(Photo $photo)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -138,10 +161,6 @@ class PhotoController extends Controller
      * @param  \App\Photo  $photo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Photo $photo)
-    {
-        //
-    }
 
     public function clean_folder(Request $request) {
       $count = 0;
@@ -188,6 +207,21 @@ class PhotoController extends Controller
       return response()->json(['success' => 'PHOTO_REMOVE']);
     }
 
+    public function destroy_photo_from_album(Request $request) {
+      $success = '';
+      $photo = Photo::where(['id' => $request->photo])->first();
+      $album = Album::where(['id' => $request->album])->first();
+      $title = $album->title;
+      $remove = Storage::disk('uploads')->delete($title.'/'.$photo->filename);
+      $photo->delete();
+      $success = 'PHOTO_REMOVE';
+      $photos = Photo::where(['album' => $request->album])->get();
+      if(count($photos) < 1) {
+        $success = 'EMPTY';
+      }
+      return response()->json(['success' => $success]);
+    }
+
     private function read_gps_location($file){
       if(is_file($file)) {
         if(exif_read_data($file)) {
@@ -220,15 +254,34 @@ class PhotoController extends Controller
               //If the longitude is west, make it negative
               $GPSLatitudeRef  == 's' ? $lat *= -1 : '';
               $GPSLongitudeRef == 'w' ? $lng *= -1 : '';
-
               return array(
                   'lat' => $lat,
                   'lng' => $lng
               );
+              //return $this->location_name($lat, $lng);
           }
         } else {
           return 'no location';
         }
       }
+  }
+
+  private function location_name($lat, $long) {
+    $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&key=AIzaSyBTk-8wPhCNjs4BE-vt0l9BRhZkGbBEFPY";
+    $json = json_decode(file_get_contents($url), true);
+    $a = $json['results'][0]['formatted_address'];
+    $location = explode(",",$a);
+    return $location;
+  }
+
+  public function clear_album($id) {
+    $album = Album::where(['id' => $id])->with('photos')->first();
+    $title = $album->title;
+    foreach ($album->photos as $photo) {
+      Storage::disk('uploads')->delete($title.'/'.$photo->filename);
+      $photo->delete();
+    }
+    $message = 'Sve fotogorafije u albumu '.$title.' su obrisane.';
+    return redirect('/admin-area/albums')->with(['album_message' => $message]);
   }
 }

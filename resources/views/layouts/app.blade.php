@@ -47,8 +47,15 @@
                     <!-- Left Side Of Navbar -->
                     @if(isset($page_name))
                     <ul class="navbar-nav mr-auto">
-                      <li class="nav-item">
-                          <a class="nav-link {{'albums'==$page_name?'active':''}}" href="{{ route('admin.albums') }}">Albumi</a>
+                      <li class="nav-item dropdown {{'albums'==$page_name?'active':''}} {{'add_album'==$page_name?'active':''}}">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Albumi
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <a class="dropdown-item" href="{{ route('admin.albums') }}">Svi albumi</a>
+                          <div class="dropdown-divider"></div>
+                          <a class="dropdown-item" href="{{ route('admin.add-album') }}">Dodaj album</a>
+                        </div>
                       </li>
                       <li class="nav-item">
                           <a class="nav-link {{'add-photos'==$page_name?'active':''}}" href="{{ route('admin.add-photos') }}">Dodaj fotografije</a>
@@ -83,6 +90,9 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('front.index') }}" target="_blank">
                                         Verzija za posetioce
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('admin.profile') }}">
+                                        Profil
                                     </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
