@@ -38,7 +38,6 @@ Route::group(['middleware' => 'auth'], function() {
   Route::get('/admin-area/remove-album/{id}', 'AlbumController@destroy')->name('admin.remove-album');
   Route::get('/admin-area/shootings', 'ShootingController@index')->name('admin.shootings');
   Route::get('/admin-area/change-shooting-status/{id}', 'ShootingController@change_status')->name('admin.change-shooting-status');
-  Route::post('/admin-area/upload-photos', 'PhotoController@store')->name('admin.upload-photos');
   Route::post('/admin-area/remove-photo', 'PhotoController@destroy')->name('admin.remove-photo');
   Route::post('/admin-area/edit-photo', 'PhotoController@update')->name('admin.edit-photo');
   Route::post('/admin-area/remove-uploads', 'PhotoController@remove_uploads')->name('admin.remove-uploads');
@@ -47,5 +46,14 @@ Route::group(['middleware' => 'auth'], function() {
   Route::get('/admin-area/clear-album/{id}', 'PhotoController@clear_album')->name('admin.clear-album');
   Route::post('/admin-area/remove-photo-from-album', 'PhotoController@destroy_photo_from_album')->name('admin.remove-photo-from-album');
   Route::post('/admin-area/clean-folder', 'PhotoController@clean_folder')->name('admin.clean-folder');
-  Route::post('/admin-area/insert-photos', 'PhotoController@create')->name('admin.insert-photos');
+
+
+  //changed routes and new routes
+  //from: Route::post('/admin-area/upload-photos', 'PhotoController@store')->name('admin.upload-photos');
+  //to:
+  Route::post('/admin-area/upload-photos', 'PhotoController@upload_photos')->name('admin.upload-photos');
+  Route::get('/admin-area/add-info')->name('admin.add-info');
+
+  //from: Route::post('/admin-area/insert-photos', 'PhotoController@create')->name('admin.insert-photos');
+  //to:
 });

@@ -7,6 +7,7 @@ use App\Album;
 use Illuminate\Http\Request;
 use Storage;
 use Illuminate\Support\Facades\File;
+use Validator;
 use Image;
 
 class PhotoController extends Controller
@@ -201,10 +202,15 @@ class PhotoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request) {
-      $photo = $request->photo;
-      $album = $request->album;
-      $remove = Storage::disk('uploads')->delete($album.'/'.$photo);
-      return response()->json(['success' => 'PHOTO_REMOVE']);
+      $photo = Photo::where(['id' => $request->photo_id])->first();
+      $album = Album::where(['id' => $photo->album])->first();
+      $title = $album->title;
+      $filename = $photo->filename;
+      $remove = Storage::disk('uploads')->delete($title.'/'.$filename);
+      $delete = Photo::where(['id' => $request->photo_id])->delete();
+      if($delete) {
+        return response()->json(['success' => 'PHOTO_REMOVE']);
+      }
     }
 
     public function destroy_photo_from_album(Request $request) {
@@ -221,50 +227,6 @@ class PhotoController extends Controller
       }
       return response()->json(['success' => $success]);
     }
-
-    private function read_gps_location($file){
-      if(is_file($file)) {
-        if(exif_read_data($file)) {
-          $info = exif_read_data($file);
-          if (isset($info['GPSLatitude']) && isset($info['GPSLongitude']) &&
-              isset($info['GPSLatitudeRef']) && isset($info['GPSLongitudeRef']) &&
-              in_array($info['GPSLatitudeRef'], array('E','W','N','S')) && in_array($info['GPSLongitudeRef'], array('E','W','N','S'))) {
-
-              $GPSLatitudeRef  = strtolower(trim($info['GPSLatitudeRef']));
-              $GPSLongitudeRef = strtolower(trim($info['GPSLongitudeRef']));
-
-              $lat_degrees_a = explode('/',$info['GPSLatitude'][0]);
-              $lat_minutes_a = explode('/',$info['GPSLatitude'][1]);
-              $lat_seconds_a = explode('/',$info['GPSLatitude'][2]);
-              $lng_degrees_a = explode('/',$info['GPSLongitude'][0]);
-              $lng_minutes_a = explode('/',$info['GPSLongitude'][1]);
-              $lng_seconds_a = explode('/',$info['GPSLongitude'][2]);
-
-              $lat_degrees = $lat_degrees_a[0] / $lat_degrees_a[1];
-              $lat_minutes = $lat_minutes_a[0] / $lat_minutes_a[1];
-              $lat_seconds = $lat_seconds_a[0] / $lat_seconds_a[1];
-              $lng_degrees = $lng_degrees_a[0] / $lng_degrees_a[1];
-              $lng_minutes = $lng_minutes_a[0] / $lng_minutes_a[1];
-              $lng_seconds = $lng_seconds_a[0] / $lng_seconds_a[1];
-
-              $lat = (float) $lat_degrees+((($lat_minutes*60)+($lat_seconds))/3600);
-              $lng = (float) $lng_degrees+((($lng_minutes*60)+($lng_seconds))/3600);
-
-              //If the latitude is South, make it negative.
-              //If the longitude is west, make it negative
-              $GPSLatitudeRef  == 's' ? $lat *= -1 : '';
-              $GPSLongitudeRef == 'w' ? $lng *= -1 : '';
-              return array(
-                  'lat' => $lat,
-                  'lng' => $lng
-              );
-              //return $this->location_name($lat, $lng);
-          }
-        } else {
-          return 'no location';
-        }
-      }
-  }
 
   private function location_name($lat, $long) {
     $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&key=AIzaSyBTk-8wPhCNjs4BE-vt0l9BRhZkGbBEFPY";
@@ -284,4 +246,98 @@ class PhotoController extends Controller
     $message = 'Sve fotogorafije u albumu '.$title.' su obrisane.';
     return redirect('/admin-area/albums')->with(['album_message' => $message]);
   }
+
+  //New functions
+  public function upload_photos(Request $request) {
+    $watermark = ('img/watermark.png');
+    $imagesArr = array();
+    $geolocationArr = array();
+    $cardArr = array();
+    $extArray = ['jpg', 'gif', 'png', 'tiff', 'jpeg'];
+    $dir_id =
+    $album = Album::where(['id' => $request->album])->first();
+    $directory = $album->title;
+    $images = $request->file('photos');
+    foreach($images as $image){
+      $validator = Validator::make(
+         array('photos' => $image),
+         array('photos' => 'required|mimes:jpeg,png,jpg,gif|image|max:8000')
+      );
+      if ($validator->fails()) {
+        return redirect()->back()->with('photo_message_err', $validator->getMessageBag()->first());
+      }
+
+      $tmp_name = $image->getClientOriginalName();
+      $extension = $image->getClientOriginalExtension();
+      $name = substr( base_convert( time(), 10, 36 ) . md5( microtime() ), 0, 16 ).'.'.$extension;
+      // if($extension == 'jpeg' || $extension == 'jpg') {
+      //   $geolocationArr[] = $this->read_gps_location($image);
+      // }
+      $photo = Image::make($image)
+                ->resize(1024, null, function ($constraint) {
+                  $constraint->aspectRatio();
+                })
+                ->insert($watermark, 'bottom-left', 10, 10)
+                ->save('img/albums/'.$directory.'/'.$name);
+
+      $imagesArr[] = $name;
+      //$tmp_name_explode = explode('.', $name);
+      $photo_db = new Photo;
+      $photo_db->album = $request->album;
+      $photo_db->filename = $name;
+      $photo_db->save();
+
+      //$div = $tmp_name_explode[0];
+      $card['directory'] = $directory;
+      $card['name'] = $name;
+      $card['id'] = $photo_db->id;
+      $card['album'] = $request->album;
+      $cardArr[] = $card;
+    }
+    return view('admin.add-info')->with(['cards' => $cardArr, 'imagesArr' => $imagesArr]);
+  }
+
+  private function read_gps_location($file){
+    if(is_file($file)) {
+      if(exif_read_data($file)) {
+        $info = exif_read_data($file);
+        if (isset($info['GPSLatitude']) && isset($info['GPSLongitude']) &&
+            isset($info['GPSLatitudeRef']) && isset($info['GPSLongitudeRef']) &&
+            in_array($info['GPSLatitudeRef'], array('E','W','N','S')) && in_array($info['GPSLongitudeRef'], array('E','W','N','S'))) {
+
+            $GPSLatitudeRef  = strtolower(trim($info['GPSLatitudeRef']));
+            $GPSLongitudeRef = strtolower(trim($info['GPSLongitudeRef']));
+
+            $lat_degrees_a = explode('/',$info['GPSLatitude'][0]);
+            $lat_minutes_a = explode('/',$info['GPSLatitude'][1]);
+            $lat_seconds_a = explode('/',$info['GPSLatitude'][2]);
+            $lng_degrees_a = explode('/',$info['GPSLongitude'][0]);
+            $lng_minutes_a = explode('/',$info['GPSLongitude'][1]);
+            $lng_seconds_a = explode('/',$info['GPSLongitude'][2]);
+
+            $lat_degrees = $lat_degrees_a[0] / $lat_degrees_a[1];
+            $lat_minutes = $lat_minutes_a[0] / $lat_minutes_a[1];
+            $lat_seconds = $lat_seconds_a[0] / $lat_seconds_a[1];
+            $lng_degrees = $lng_degrees_a[0] / $lng_degrees_a[1];
+            $lng_minutes = $lng_minutes_a[0] / $lng_minutes_a[1];
+            $lng_seconds = $lng_seconds_a[0] / $lng_seconds_a[1];
+
+            $lat = (float) $lat_degrees+((($lat_minutes*60)+($lat_seconds))/3600);
+            $lng = (float) $lng_degrees+((($lng_minutes*60)+($lng_seconds))/3600);
+
+            //If the latitude is South, make it negative.
+            //If the longitude is west, make it negative
+            $GPSLatitudeRef  == 's' ? $lat *= -1 : '';
+            $GPSLongitudeRef == 'w' ? $lng *= -1 : '';
+            return array(
+                'lat' => $lat,
+                'lng' => $lng
+            );
+            //return $this->location_name($lat, $lng);
+        }
+      } else {
+        return 'no location';
+      }
+    }
+}
 }

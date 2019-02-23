@@ -14,11 +14,19 @@
           </button>
         </div>
         @endif
+        @if(Session::has('photo_message_err'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>Doslo je do greske.</strong> {{Session::get('photo_message_err')}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        @endif
       </div>
       <hr style="background-color: yellow; height: 1px; border: 0;">
     </div>
     <div class="col-md-12">
-      <form id="add-photos" action="{{route('admin.insert-photos')}}" method="POST" enctype="multipart/form-data">
+      <form id="add-photos" action="{{route('admin.upload-photos')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group col-md-6">
           <select name="album" id="album" class="form-control" required>
@@ -30,19 +38,15 @@
         </div>
         <div class="form-group col-md-6">
           <div class="custom-file">
-            <input type="hidden" name="album" value="" id="album-name">
             <input type="file" class="custom-file-input" id="photos" name="photos[]" multiple>
             <label class="custom-file-label" for="customFile">Izaberite fotografije</label>
             <button type="button" name="button" class="btn btn-danger btn-sm mt-2 d-none" id="remove-all">Izbrisi sve ucitane fotografije</button>
             <p id="message_images" class="text-danger d-none"></p>
           </div>
         </div>
-        <div id="preview" class="row">
 
-        </div>
-
-       <div class="form-group">
-         <button type="submit" id="submit-btn" class="btn btn-success mt-5 d-none" name="submit">Dodaj fotografije</button>
+       <div class="form-group  col-md-6">
+         <button type="submit" id="submit-btn" class="btn btn-success mt-5" name="submit">Ucitaj fotografije</button>
        </div>
      </form>
     </div>
@@ -51,43 +55,52 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-    //upload photos
     $(document).on('change', '#photos', function(e) {
       e.preventDefault();
-      var files = $(this)[0].files;
-      const form_data = new FormData();
-      for(let file of files) {
-        form_data.append('images[]', file);
-      }
-      var album = $('#album').val();
-      $('#album-name').val(album);
-      if(album == '') {
+      let album_id = $('#album').val();
+      if(album_id == '') {
         $('#message_images').removeClass('d-none');
         $('#message_images').html('Prvo odaberite album!');
         return false;
       }
-      form_data.append('album', album);
-      $.ajaxSetup({
-         headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-         }
-     });
-      $.ajax({
-         url: "upload-photos",
-         type: "POST",
-         data: form_data,
-         dataType: 'json',
-         contentType: false,
-         cache: false,
-         processData: false,
-         success: function(result) {
-           $('#preview').append(result.cards);
-           $('#remove-all').removeClass('d-none');
-           $('#submit-btn').removeClass('d-none');
-           console.log(photosArr());
-         }
-       });
     });
+    //upload photos
+    // $(document).on('change', '#photos', function(e) {
+    //   e.preventDefault();
+    //   var files = $(this)[0].files;
+    //   const form_data = new FormData();
+    //   for(let file of files) {
+    //     form_data.append('images[]', file);
+    //   }
+    //   var album = $('#album').val();
+    //   $('#album-name').val(album);
+    //   if(album == '') {
+    //     $('#message_images').removeClass('d-none');
+    //     $('#message_images').html('Prvo odaberite album!');
+    //     return false;
+    //   }
+    //   form_data.append('album', album);
+    //   $.ajaxSetup({
+    //      headers: {
+    //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //      }
+    //  });
+    //   $.ajax({
+    //      url: "upload-photos",
+    //      type: "POST",
+    //      data: form_data,
+    //      dataType: 'json',
+    //      contentType: false,
+    //      cache: false,
+    //      processData: false,
+    //      success: function(result) {
+    //        $('#preview').append(result.cards);
+    //        $('#remove-all').removeClass('d-none');
+    //        $('#submit-btn').removeClass('d-none');
+    //        console.log(photosArr());
+    //      }
+    //    });
+    // });
 
     //remove specified photo
     $(document).on('click', '.remove-photo', function(e) {
