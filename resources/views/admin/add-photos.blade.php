@@ -44,7 +44,9 @@
             <p id="message_images" class="text-danger d-none"></p>
           </div>
         </div>
+        <div class="form-group col-md-6" id="preview_filenames">
 
+        </div>
        <div class="form-group  col-md-6">
          <button type="submit" id="submit-btn" class="btn btn-success mt-5" name="submit">Ucitaj fotografije</button>
        </div>
@@ -62,7 +64,23 @@
         $('#message_images').removeClass('d-none');
         $('#message_images').html('Prvo odaberite album!');
         return false;
+      } else {
+        var files = $(this)[0].files;
+        for(let i=0; i<files.length; i++) {
+          console.log(files[i]);
+          $('#preview_filenames').append('<span class="badge badge-info ml-2 mt-2">'+files[i].name+'<a href="" class="remove_from_input text-danger" data-id="'+i+'"> x</a></span>');
+        }
       }
+    });
+
+    $(document).on('click', '.remove_from_input', function(e) {
+      e.preventDefault();
+      let id = parseInt($(this).attr('data-id'));
+      var photos = $('#photos')[0].files;
+      console.log(id);
+      delete $('#photos')[0].files.splice(id, 1);;
+      console.log(photos);
+      $(this).parent().remove();
     });
     //upload photos
     // $(document).on('change', '#photos', function(e) {

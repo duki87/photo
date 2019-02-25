@@ -62,106 +62,16 @@ class PhotoController extends Controller
       return response()->json(['success' => $success, 'move' => $move]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request) {
-      foreach ($request->filename as $key=>$value) {
-        //$image = json_decode($data, true);
-        $photo = new Photo;
-        $photo->title = $request->title[$key];
-        $photo->description = $request->description[$key];
-        $photo->location = $request->location[$key];
-        $photo->album = $request->album;
-        $photo->filename = $value;
-        $photo->save();
+    public function add_info(Request $request) {
+      foreach($request->photo_id as $key=>$value) {
+        Photo::where(['id' => $request->photo_id[$key]])->update([
+          'title'=>$request->title[$key],
+          'description'=>$request->description[$key],
+          'location'=>$request->location[$key]
+        ]);
       }
-      return redirect()->back()->with(['photo_message' => 'fotografije su dodate u album.']);
+      return redirect('/admin-area/albums')->with(['album_message' => 'Informacije o fotografijama su dodate.']);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request) {
-      $watermark = ('img/watermark.png');
-      $imagesArr = array();
-      $geolocationArr = array();
-      $cardArr = array();
-      $extArray = ['jpg', 'gif', 'png', 'tiff', 'jpeg'];
-      $dir_id =
-      $album = Album::where(['id' => $request->album])->first();
-      $directory = $album->title;
-      $images = $request->file('images');
-      foreach($images as $image){
-        $tmp_name = $image->getClientOriginalName();
-        $extension = $image->getClientOriginalExtension();
-        $name = substr( base_convert( time(), 10, 36 ) . md5( microtime() ), 0, 16 ).'.'.$extension;
-        if(!in_array($extension, $extArray)) {
-          continue;
-        }
-        // if($extension == 'jpeg' || $extension == 'jpg') {
-        //   $geolocationArr[] = $this->read_gps_location($image);
-        // }
-        $photo = Image::make($image)
-                  ->resize(1024, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                  })
-                  ->insert($watermark, 'bottom-left', 10, 10)
-                  ->save('img/albums/'.$directory.'/'.$name);
-        //Try to find out how to implement upload using storage facade - there is
-        //a problem to store image this way after using image intervention
-
-        //$storagePath = Storage::disk('uploads')->put($directory, $photo);
-        //$imagesArr[] = basename($storagePath);
-        $imagesArr[] = $name;
-        $tmp_namee = explode('.', $name);
-        $id = $tmp_namee[0];
-        $cardArr[] = '<div class="col-md-4 mt-2" id="'.$id.'">
-                       <div class="card" style="background-color:rgba(255,255,255,0.3)" style="width:100%">
-                         <img class="card-img-top" src="'.asset('img/albums/'.$directory.'/'.$name).'" alt="" style="width:100%">
-                         <div class="card-body">
-                           <input type="text" class="form-control mt-2" name="title[]" id="title" value="" placeholder="Naziv">
-                           <input type="text" class="form-control mt-2" name="location[]" id="location" value="" placeholder="Lokacija">
-                           <textarea class="form-control mt-2" name="description[]" id="location" value="" placeholder="Opis"></textarea>
-                           <input type="hidden" class="form-control filenames" name="filename[]" id="filename" value="'.$name.'">
-                           <a href="'.route('admin.remove-photo').'" class="btn btn-danger mt-2 remove-photo" data-photo="'.$name.'" data-album="'.$directory.'" style="width:100%"  ><i class="fas fa-times-circle"></i> Izbaci</a>
-                         </div>
-                       </div>
-                     </div>';
-      }
-      return response()->json(['cards' => $cardArr, 'imagesArr' => $imagesArr]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Photo  $photo
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Photo $photo)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Photo  $photo
-     * @return \Illuminate\Http\Response
-     */
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Photo  $photo
-     * @return \Illuminate\Http\Response
-     */
 
     public function clean_folder(Request $request) {
       $count = 0;
@@ -187,20 +97,17 @@ class PhotoController extends Controller
     }
 
     public function remove_uploads(Request $request) {
-      $album = Album::where(['id' => $request->album])->first();
+      $album = Album::where(['id' => $request->remove_album_id])->first();
       $directory = $album->title;
-      foreach ($request->filenames as $filename) {
+      foreach($request->remove_photo_id as $id) {
+        $photo = Photo::where(['id' => $id])->first();
+        $filename = $photo->filename;
         Storage::disk('uploads')->delete($directory.'/'.$filename);
+        Photo::where(['id' => $id])->delete();
       }
-      return response()->json(['success' => 'REMOVE_UPLOADS']);
+      return redirect('/admin-area/add-photos')->with(['photo_message' => 'Sve ucitane fotografije su uspesno obrisane.']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Photo  $photo
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request) {
       $photo = Photo::where(['id' => $request->photo_id])->first();
       $album = Album::where(['id' => $photo->album])->first();
@@ -239,7 +146,7 @@ class PhotoController extends Controller
   public function clear_album($id) {
     $album = Album::where(['id' => $id])->with('photos')->first();
     $title = $album->title;
-    foreach ($album->photos as $photo) {
+    foreach($album->photos as $photo) {
       Storage::disk('uploads')->delete($title.'/'.$photo->filename);
       $photo->delete();
     }
@@ -291,10 +198,10 @@ class PhotoController extends Controller
       $card['directory'] = $directory;
       $card['name'] = $name;
       $card['id'] = $photo_db->id;
-      $card['album'] = $request->album;
       $cardArr[] = $card;
     }
-    return view('admin.add-info')->with(['cards' => $cardArr, 'imagesArr' => $imagesArr]);
+    $album_id = $request->album;
+    return view('admin.add-info')->with(['cards' => $cardArr, 'imagesArr' => $imagesArr, 'album_id' => $album_id]);
   }
 
   private function read_gps_location($file){
@@ -339,5 +246,5 @@ class PhotoController extends Controller
         return 'no location';
       }
     }
-}
+  }
 }

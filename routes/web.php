@@ -56,4 +56,5 @@ Route::group(['middleware' => 'auth'], function() {
 
   //from: Route::post('/admin-area/insert-photos', 'PhotoController@create')->name('admin.insert-photos');
   //to:
+  Route::post('/admin-area/add-info', 'PhotoController@add_info')->name('admin.add-info');
 });

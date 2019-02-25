@@ -6,7 +6,7 @@
     <meta name="keywords" content="zilijen foto">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="author" content="Dusan Marinkovic">
-    <link rel="shortcut icon" type="img/png" href="img/logo-lens.png">
+    <link rel="shortcut icon" type="img/png" href="{{asset('img/logo-lens.png')}}">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -58,7 +58,7 @@
                         </div>
                       </li>
                       <li class="nav-item">
-                          <a class="nav-link {{'add-photos'==$page_name?'active':''}}" href="{{ route('admin.add-photos') }}">Dodaj fotografije</a>
+                          <a class="nav-link {{'add-photos'==$page_name?'active':''}} {{'add-info'==$page_name?'active':''}}" href="{{ route('admin.add-photos') }}">Dodaj fotografije</a>
                       </li>
                       <li class="nav-item">
                           <a class="nav-link {{'shootings'==$page_name?'active':''}}" href="{{ route('admin.shootings') }}">Zahtevi {{App\Http\Controllers\ShootingController::number_of_requests()}}</a>

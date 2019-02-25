@@ -5,28 +5,41 @@
   <div class="row">
     <div class="col-md-12">
       <h2 style="color:white">Dodaj fotografije</h2>
+      <form class="" action="{{route('admin.remove-uploads')}}" method="post">
+        @csrf
+        <input type="hidden" name="remove_album_id" value="{{$album_id}}">
+        @foreach($cards as $card)
+          <input type="hidden" name="remove_photo_id[]" value="{{$card['id']}}">
+        @endforeach
+        <button type="submit" name="button" onclick="return confirm('Da li ste sigurni da zelite da obrisete sve fotografije koje ste ucitali?')" class="btn btn-danger remove_all"><i class="fas fa-trash-alt"></i> Obrisi sve ucitane fotografije</button>
+      </form>
       <div class="" id="message">
 
       </div>
       <hr style="background-color: yellow; height: 1px; border: 0;">
     </div>
-    <div class="row" id="photos">
-      @foreach($cards as $card)
-      <div class="col-md-3 mt-2 cards" id="{{$card['id']}}">
-         <div class="card" style="background-color:rgba(255,255,255,0.3)" style="width:100%">
-           <img class="card-img-top" src="{{asset('img/albums/'.$card['directory'].'/'.$card['name'])}}" alt="" style="object-fit:cover">
-           <div class="card-body">
-             <input type="hidden" class="form-control mt-2" name="photo_id[]" value="{{$card['id']}}">
-             <input type="text" class="form-control mt-2" name="title[]" value="" placeholder="Naziv">
-             <input type="text" class="form-control mt-2" name="location[]" value="" placeholder="Lokacija">
-             <textarea class="form-control mt-2" name="description[]" value="" placeholder="Opis"></textarea>
-             <input type="hidden" class="form-control filenames" name="filename[]" value="'.$name.'">
-             <a href="{{route('admin.remove-photo')}}" class="btn btn-danger mt-2 remove-photo" data-photo_id="{{$card['id']}}" style="width:100%"  ><i class="fas fa-times-circle"></i> Izbaci</a>
+    <form class="" action="{{route('admin.add-info')}}" method="post">
+      @csrf
+      <div class="row" id="photos">
+        @foreach($cards as $card)
+        <div class="col-md-3 mt-2 cards" id="{{$card['id']}}">
+           <div class="card" style="background-color:rgba(255,255,255,0.3)" style="width:100%">
+             <img class="card-img-top" src="{{asset('img/albums/'.$card['directory'].'/'.$card['name'])}}" height="100%" width="auto"  alt="..." style="object-fit:cover">
+             <div class="card-body">
+               <input type="hidden" class="form-control mt-2" name="photo_id[]" value="{{$card['id']}}">
+               <input type="text" class="form-control mt-2" name="title[]" value="" placeholder="Naziv">
+               <input type="text" class="form-control mt-2" name="location[]" value="" placeholder="Lokacija">
+               <textarea class="form-control mt-2" name="description[]" value="" placeholder="Opis"></textarea>
+               <a href="{{route('admin.remove-photo')}}" class="btn btn-danger mt-2 remove-photo" data-photo_id="{{$card['id']}}" style="width:100%"  ><i class="fas fa-times-circle"></i> Izbaci</a>
+             </div>
            </div>
          </div>
-       </div>
-      @endforeach
-    </div>
+        @endforeach
+        <div class="form-group col-md-12 mt-4">
+          <button type="submit" name="button" class="btn btn-success"><i class="far fa-save"></i> Sacuvaj informacije o fotogorafijama</button>
+        </div>
+      </div>
+    </form>
   </div>
 </div>
 

@@ -4,8 +4,8 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h2 style="color:white">Izmeni fotografije u albumu <b style="color:yellow">{{$album->title}}</b></h2>
-      <a onclick="return confirm('Da li ste sigurni da zelite da obrisete sve fotografije iz ovog albuma?')" href="{{route('admin.clear-album', $album->id)}}" class="btn btn-danger remove_all {{count($album->photos) < 1 ? 'd-none':''}}" id="remove-all">Obrisi sve fotografije</a>
+      <h2 style="color:white">Izmeni fotografije u albumu <b style="color:yellow">{{$album->title}} ({{count($album->photos)}} fotogorafija)</b></h2>
+      <a onclick="return confirm('Da li ste sigurni da zelite da obrisete sve fotografije iz ovog albuma?')" href="{{route('admin.clear-album', $album->id)}}" class="btn btn-danger remove_all {{count($album->photos) < 1 ? 'd-none':''}}" id="remove-all"><i class="fas fa-trash-alt"></i> Obrisi sve fotografije</a>
       <a href="{{route('admin.add-photos')}}" class="btn btn-success {{count($album->photos) < 1 ? '':'d-none'}}" id="add-photos">Album je sada prazan - dodaj nove fotografije</a>
       <div class="mt-2" id="message" style=""></div>
       <hr style="background-color: yellow; height: 1px; border: 0;">
