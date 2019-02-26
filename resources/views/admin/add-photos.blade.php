@@ -44,11 +44,14 @@
             <p id="message_images" class="text-danger d-none"></p>
           </div>
         </div>
-        <div class="form-group col-md-6" id="preview_filenames">
+        <div class="row" id="preview_files">
 
         </div>
-       <div class="form-group  col-md-6">
-         <button type="submit" id="submit-btn" class="btn btn-success mt-5" name="submit">Ucitaj fotografije</button>
+       <div class="form-group" id="buttons">
+         <button type="submit" disabled id="submit-btn" class="btn btn-success mt-5" name="submit">
+           <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+           <span id="btntext" class="">Dodaj fotografije</span>
+         </button>
        </div>
      </form>
     </div>
@@ -57,6 +60,9 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
+    $('#submit-btn').prop('disabled', true);
+    var storedFiles = [];
+
     $(document).on('change', '#photos', function(e) {
       e.preventDefault();
       let album_id = $('#album').val();
@@ -66,22 +72,67 @@
         return false;
       } else {
         var files = $(this)[0].files;
-        for(let i=0; i<files.length; i++) {
-          console.log(files[i]);
-          $('#preview_filenames').append('<span class="badge badge-info ml-2 mt-2">'+files[i].name+'<a href="" class="remove_from_input text-danger" data-id="'+i+'"> x</a></span>');
+  			var imageType = /image.*/;
+        for(let photo of files) {
+          if(photo.type.match(imageType)) {
+            storedFiles.push(photo);
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              let card =
+              '<div class="col-md-2 ml-2 mt-2" style="position:relative">'+
+                '<img src="'+reader.result+'" class="rounded" alt="..." style="width:100%; height:100%; object-fit:cover">'+
+              '</div>';
+                // '<div class="col-md-2 ml-2 mt-2" style="position:relative">'+
+                //   '<button title="Klikni da obrises fotografiju" class="very-small-btn remove_from_input" data-file="'+photo.name+'" style="position:absolute;top:0px;right:14px;">x</button>'+
+                //   '<img src="'+reader.result+'" class="rounded" alt="..." style="width:100%; height:100%; object-fit:cover">'+
+                // '</div>';
+              $('#preview_files').append(card);
+            }
+            reader.readAsDataURL(photo);
+            $('#submit-btn').prop('disabled', false);
+          } else {
+            $('#message_images').removeClass('d-none');
+            $('#message_images').html("Fajlovi nedozvoljene ekstenzije su iskljuceni!");
+          }
+        }
+        if(storedFiles.length > 0) {
+          $('#buttons').append('<button id="reset_input" title="Odbaci sve fotografije" class="btn btn-danger d-inline">Odbaci sve</button>');
         }
       }
     });
 
-    $(document).on('click', '.remove_from_input', function(e) {
+    $(document).on('click', '#reset_input', function(e) {
       e.preventDefault();
-      let id = parseInt($(this).attr('data-id'));
-      var photos = $('#photos')[0].files;
-      console.log(id);
-      delete $('#photos')[0].files.splice(id, 1);;
-      console.log(photos);
-      $(this).parent().remove();
+      $('#preview_files').html('');
+      $('#photos').val('');
+      storedFiles = [];
+      $(this).remove();
+      $('#submit-btn').prop('disabled', true);
     });
+
+    $(document).on('click', '#submit-btn', function(e) {
+      console.log('dsfsf');
+      $('#btntext').html('Ucitavanje...');
+      $('#spinner').removeClass('d-none');
+    });
+
+    //Functions that where used before
+    //
+    // $(document).on('click', '.remove_from_input', function(e) {
+    //   var file = $(this).attr('data-file');
+    //   for(var i=0;i<storedFiles.length;i++) {
+    //     if(storedFiles[i].name === file) {
+    //       storedFiles.splice(i,1);
+    //       break;
+    //     }
+    //   }
+    //   if(storedFiles.length < 1) {
+    //     $('#submit-btn').prop('disabled', true);
+    //   }
+    //   $(this).parent().remove();
+    //   console.log(storedFiles);
+    // });
+
     //upload photos
     // $(document).on('change', '#photos', function(e) {
     //   e.preventDefault();
@@ -120,82 +171,12 @@
     //    });
     // });
 
-    //remove specified photo
-    $(document).on('click', '.remove-photo', function(e) {
-      e.preventDefault();
-      var photo = $(this).attr('data-photo');
-      var album = $(this).attr('data-album');
-      var id = $(this).parent().parent().parent().attr('id');
-      console.log(id);
-      const form_data = new FormData();
-      if(album == '') {
-        $('#message_images').removeClass('d-none');
-        $('#message_images').html('Prvo odaberite album!');
-        return false;
-      }
-      form_data.append('photo', photo);
-      form_data.append('album', album);
-      $.ajaxSetup({
-         headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-         }
-     });
-      $.ajax({
-         url: "remove-photo",
-         type: "POST",
-         data: form_data,
-         dataType: 'json',
-         contentType: false,
-         cache: false,
-         processData: false,
-         success: function(result) {
-           if(result.success == 'PHOTO_REMOVE') {
-             $('#message_images').removeClass('d-none');
-             $('#message_images').html('Fotografija obrisana');
-             $('#'+id).remove();
-           }
-         }
-       });
-    });
-
-    $(document).on('click', '#remove-all', function(e) {
-      e.preventDefault();
-      var album = $('#album-name').val();
-      var filenames = [];
-      const form_data = new FormData();
-      for(let file of $('.filenames')){
-        //filenames.push(file.value);
-        form_data.append('filenames[]', file.value);
-      }
-      //console.log(filenames);
-      form_data.append('album', album);
-      $.ajaxSetup({
-         headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-         }
-     });
-      $.ajax({
-         url: "remove-uploads",
-         type: "POST",
-         data: form_data,
-         dataType: 'json',
-         contentType: false,
-         cache: false,
-         processData: false,
-         success: function(result) {
-           $('#preview').html('');
-           $('#message_images').removeClass('d-none');
-           $('#message_images').html('Fotografije su obrisane');
-         }
-       });
-    });
-
-    function photosArr() {
-      var values = $("input[name='filename[]']")
-         .map(function(){
-           return $(this).val();
-         }).get();
-    }
+    // function photosArr() {
+    //   var values = $("input[name='filename[]']")
+    //      .map(function(){
+    //        return $(this).val();
+    //      }).get();
+    // }
   });
 </script>
 @endsection

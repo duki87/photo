@@ -4,7 +4,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h2 style="color:white">Izmeni fotografije u albumu <b style="color:yellow">{{$album->title}} ({{count($album->photos)}} fotogorafija)</b></h2>
+      <h2 style="color:white">Izmeni fotografije u albumu <b style="color:yellow">{{$album->title}} <span id="count">({{count($album->photos)}} fotogorafija)</span></b></h2>
       <a onclick="return confirm('Da li ste sigurni da zelite da obrisete sve fotografije iz ovog albuma?')" href="{{route('admin.clear-album', $album->id)}}" class="btn btn-danger remove_all {{count($album->photos) < 1 ? 'd-none':''}}" id="remove-all"><i class="fas fa-trash-alt"></i> Obrisi sve fotografije</a>
       <a href="{{route('admin.add-photos')}}" class="btn btn-success {{count($album->photos) < 1 ? '':'d-none'}}" id="add-photos">Album je sada prazan - dodaj nove fotografije</a>
       <div class="mt-2" id="message" style=""></div>
@@ -15,7 +15,7 @@
       @foreach($album->photos as $photo)
         <div class="col-md-2 mt-2" id="{{$photo->id}}" style="position:relative">
           <button type="button" name="remove_button" data-photo="{{$photo->id}}" data-album="{{$album->id}}" class="btn btn-danger btn-sm remove-photo" style="position:absolute; top:5px; right:22px">X</button>
-          <a href="" type="" class="details" data-toggle="modal" data-target="#details{{$photo->id}}"><img src="{{asset('img/albums/'.$directory.'/'.$photo['filename'])}}" style="object-fit:cover" width="100%" alt="..." class="img-thumbnail"></a>
+          <a href="" type="" class="details" data-toggle="modal" data-target="#details{{$photo->id}}"><img src="{{asset('img/albums/'.$directory.'/'.$photo['filename'])}}" style="object-fit:cover; width:100%; height:200px" alt="..." class="img-thumbnail"></a>
         </div>
       @endforeach
       </div>
@@ -144,12 +144,14 @@
                $('#message').html(message);
                $('#'+photo).remove();
                $('#details'+photo).remove();
+               $('#count').html('('+result.count+' fotogorafija'+')');
              }
              if(result.success == 'EMPTY') {
                $('#'+photo).remove();
                $('#details'+photo).remove();
                $('#remove-all').addClass('d-none');
                $('#add-photos').removeClass('d-none');
+               $('#count').html('('+result.count+' fotogorafija'+')');
              }
            }
          });

@@ -54,6 +54,7 @@
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
     <script src="{{asset('js/jquery-min.js')}}"></script>
     <script src="{{asset('js/popper.min.js')}}"></script>
+    <script src="{{asset('js/bootstrap4-3.min.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
     <script src="{{asset('js/jquery.mixitup.js')}}"></script>
     <script src="{{asset('js/nivo-lightbox.js')}}"></script>

@@ -13,17 +13,16 @@
 
     <title>Zilijen foto | Admin Area</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
     <!-- Bootstrap CSS -->
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
-    <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/bootstrap4-3.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/font-awesome.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/line-icons.css')}}">
     <link rel="stylesheet" href="{{asset('css/slicknav.css')}}">
     <link rel="stylesheet" href="{{asset('css/responsive.css')}}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="{{asset('css/round-button.css')}}">
+    <link rel="stylesheet" href="{{asset('css/app-custom.css')}}">
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
@@ -114,9 +113,11 @@
     <div class="mt-4"></div>
     @yield('content')
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <!-- Scripts -->
     <script src="{{asset('js/jquery-min.js')}}"></script>
-    <script src="{{asset('js/bootstrap.min.js')}}"></script>
     <script src="{{asset('js/popper.min.js')}}"></script>
+    <script src="{{asset('js/bootstrap4-3.min.js')}}"></script>
+    <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
     <script src="{{asset('js/jquery.mixitup.js')}}"></script>
     <script src="{{asset('js/nivo-lightbox.js')}}"></script>
     <script src="{{asset('js/owl.carousel.js')}}"></script>
@@ -127,12 +128,9 @@
     <script src="{{asset('js/smoothscroll.js')}}"></script>
     <script src="{{asset('js/jquery.slicknav.js')}}"></script>
     <script src="{{asset('js/wow.js')}}"></script>
-    <script src="{{asset('js/hero-slider.js')}}"></script>
     <script src="{{asset('js/jquery.vide.js')}}"></script>
     <script src="{{asset('js/jquery.counterup.min.js')}}"></script>
     <script src="{{asset('js/jquery.magnific-popup.min.js')}}"></script>
-    <script src="{{asset('js/waypoints.min.js')}}"></script>
     <script src="{{asset('js/form-validator.min.js')}}"></script>
-    <script src="{{asset('js/contact-form-script.js')}}"></script>
 </body>
 </html>

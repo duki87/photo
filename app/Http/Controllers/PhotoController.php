@@ -132,7 +132,8 @@ class PhotoController extends Controller
       if(count($photos) < 1) {
         $success = 'EMPTY';
       }
-      return response()->json(['success' => $success]);
+      $count = Photo::where(['album' => $request->album])->count();
+      return response()->json(['success' => $success, 'count' => $count]);
     }
 
   private function location_name($lat, $long) {
@@ -157,6 +158,7 @@ class PhotoController extends Controller
   //New functions
   public function upload_photos(Request $request) {
     $watermark = ('img/watermark.png');
+    $validatorErrors = array();
     $imagesArr = array();
     $geolocationArr = array();
     $cardArr = array();
@@ -170,12 +172,12 @@ class PhotoController extends Controller
          array('photos' => $image),
          array('photos' => 'required|mimes:jpeg,png,jpg,gif|image|max:8000')
       );
-      if ($validator->fails()) {
-        return redirect()->back()->with('photo_message_err', $validator->getMessageBag()->first());
-      }
-
       $tmp_name = $image->getClientOriginalName();
       $extension = $image->getClientOriginalExtension();
+      if($validator->fails()) {
+        $validatorErrors[] = $tmp_name.'.'.$extension.' => '.$validator->getMessageBag()->first();
+        continue;
+      }
       $name = substr( base_convert( time(), 10, 36 ) . md5( microtime() ), 0, 16 ).'.'.$extension;
       // if($extension == 'jpeg' || $extension == 'jpg') {
       //   $geolocationArr[] = $this->read_gps_location($image);
@@ -201,7 +203,7 @@ class PhotoController extends Controller
       $cardArr[] = $card;
     }
     $album_id = $request->album;
-    return view('admin.add-info')->with(['cards' => $cardArr, 'imagesArr' => $imagesArr, 'album_id' => $album_id]);
+    return view('admin.add-info')->with(['cards' => $cardArr, 'validatorErrors' => $validatorErrors, 'album_id' => $album_id]);
   }
 
   private function read_gps_location($file){
