@@ -203,7 +203,7 @@ class PhotoController extends Controller
       $cardArr[] = $card;
     }
     $album_id = $request->album;
-    return view('admin.add-info')->with(['cards' => $cardArr, 'validatorErrors' => $validatorErrors, 'album_id' => $album_id]);
+    return view('admin.add-info')->with(['cards' => $cardArr, 'validatorErrors' => $validatorErrors, 'album_id' => $album_id, 'page_name' => 'add-photos']);
   }
 
   private function read_gps_location($file){
