@@ -33,7 +33,7 @@
 </head>
 <body style="background-color:black">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+        <nav class="navbar navbar-expand-md navbar-light navbar-laravel" style="background-color:#ffcc00">
             <div class="container">
                 <a class="navbar-brand" href="{{ route('admin.index') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -81,7 +81,7 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item dropdown">
+                            <li class="nav-item dropdown {{'profile'==$page_name?'active':''}}">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>

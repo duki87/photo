@@ -46,15 +46,11 @@ Route::group(['middleware' => 'auth'], function() {
   Route::get('/admin-area/clear-album/{id}', 'PhotoController@clear_album')->name('admin.clear-album');
   Route::post('/admin-area/remove-photo-from-album', 'PhotoController@destroy_photo_from_album')->name('admin.remove-photo-from-album');
   Route::post('/admin-area/clean-folder', 'PhotoController@clean_folder')->name('admin.clean-folder');
-
-
-  //changed routes and new routes
-  //from: Route::post('/admin-area/upload-photos', 'PhotoController@store')->name('admin.upload-photos');
-  //to:
   Route::post('/admin-area/upload-photos', 'PhotoController@upload_photos')->name('admin.upload-photos');
   Route::get('/admin-area/add-info')->name('admin.add-info');
-
-  //from: Route::post('/admin-area/insert-photos', 'PhotoController@create')->name('admin.insert-photos');
-  //to:
   Route::post('/admin-area/add-info', 'PhotoController@add_info')->name('admin.add-info');
+
+  //Update profile
+  Route::post('/admin-area/update-profile', 'Auth\UpdateProfileController@update_profile')->name('admin.update-profile');
+  Route::post('/admin-area/change-password', 'Auth\UpdatePasswordController@change_password')->name('admin.change-password');
 });

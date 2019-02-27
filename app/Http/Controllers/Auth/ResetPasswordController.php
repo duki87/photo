@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
 use DB;
 use Auth;
 use Hash;
@@ -30,7 +31,7 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/admin-area';
 
     /**
      * Create a new controller instance.
@@ -66,25 +67,20 @@ class ResetPasswordController extends Controller
       */
   }
 
-  public function resetPassword(Request $request, $token) {
-    
-     //some validation
-     $password = $request->password;
-     $tokenData = DB::table('password_resets')
-     ->where('token', $token)->first();
-
-     $user = User::where('email', $tokenData->email)->first();
-     if ( !$user ) return redirect()->to('home'); //or wherever you want
-
-     $user->password = Hash::make($password);
-     $user->update(); //or $user->save();
-
-     //do we log the user directly or let them login and try their password for the first time ? if yes
-     Auth::login($user);
-
-    // If the user shouldn't reuse the token later, delete the token
-    DB::table('password_resets')->where('email', $user->email')->delete();
-
-    //redirect where we want according to whether they are logged in or not.
+  public function change_password(Request $request) {
+    if($request->has('old_password') || $request->has('new_password')) {
+      if($request->new_password != $request->check_password) {
+        return redirect()->back()->with(['error' => 'Lozinke se ne poklapaju. Pokusajte ponovo.']);
+      }
+      if(empty($request->email)) {
+        return redirect()->back()->with(['error' => 'Niste uneli e-mail. Pokusajte ponovo.']);
+      } else {
+        $user = User::where('email', $request->email)->first();
+        if(!$user) return redirect()->back()->with(['error' => 'Neispravan e-mail.']);
+        $user->password = Hash::make($request->new_password);
+        $update = $user->update();
+        if($update) return redirect()->back()->with(['success' => 'Uspesno ste promenili lozinku.']);
+      }
+    }
  }
 }

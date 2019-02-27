@@ -11,8 +11,8 @@
           </div>
 
           <div class="form-label-group">
-            <input type="email" id="email" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="Email address"  name="email" value="{{ old('email') }}" required autofocus>
-            <label for="inputEmail" style="color:white">Email address</label>
+            <input type="email" id="email" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="Unesite e-mail adresu"  name="email" value="{{ old('email') }}" required autofocus>
+            <label for="inputEmail" style="color:white">Email adresa</label>
             @if ($errors->has('email'))
               <span class="invalid-feedback" role="alert">
                   <strong>{{ $errors->first('email') }}</strong>
@@ -21,8 +21,8 @@
           </div>
 
           <div class="form-label-group">
-            <input type="password" id="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="Password" name="password" required>
-            <label for="inputPassword" style="color:white">Password</label>
+            <input type="password" id="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="Unesite lozinku" name="password" required>
+            <label for="inputPassword" style="color:white">Lozinka</label>
 
             @if ($errors->has('password'))
               <span class="invalid-feedback" role="alert">
@@ -36,17 +36,17 @@
             <input class="" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
             <label class="form-check-label" for="remember" style="color:white">
-                {{ __('Remember Me') }}
+                {{ __('Zapamti me') }}
             </label>
           </div>
-          <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Prijavi se</button>
 
           @if (Route::has('password.request'))
               <a class="btn btn-link" href="{{ route('password.request') }}">
-                  {{ __('Forgot Your Password?') }}
+                  {{ __('Zaboravljena lozinka?') }}
               </a>
           @endif
-          <p class="mt-5 mb-3 text-muted text-center">&copy; 2017-2018</p>
+          <p class="mt-5 mb-3 text-muted text-center">&copy; 2019 DJ Web Development</p>
         </form>
       </div>
     </div>
