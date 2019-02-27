@@ -26,11 +26,15 @@
       <h3 class="text-white text-center mt-2">Ocisti foldere od nepovezanih fotografija</h3>
     </div>
     <div class="col-md-4">
-      <a href="{{ route('front.index') }}" target="_blank" class="button button-circle button-primary text-white pt-4" style="margin-left:auto; margin-right:auto; display:block"><i class="far fa-eye fa-6x"></i></a>
+      <a href="{{ route('front.index') }}" class="button button-circle button-primary text-white pt-4" style="margin-left:auto; margin-right:auto; display:block"><i class="far fa-eye fa-6x"></i></a>
       <hr style="background-color: skyblue; height: 1px; border: 0;">
       <h3 class="text-white text-center mt-2">Pogledaj verziju sajta za posetioce</h3>
     </div>
-
+    <div class="col-md-4">
+      <a href="{{ route('admin.profile') }}"class="button button-circle button-highlight text-white pt-4" style="margin-left:auto; margin-right:auto; display:block"><i class="fas fa-user fa-6x"></i></a>
+      <hr style="background-color: orange; height: 1px; border: 0;">
+      <h3 class="text-white text-center mt-2">Profil administratora</h3>
+    </div>
   </div><!-- /.row -->
 </div>
 

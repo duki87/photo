@@ -16,7 +16,7 @@
         @endif
       </div>
       <hr style="background-color: yellow; height: 1px; border: 0;">
-      <p>Ocisti albume od fotografija koje su greskom unete ili nisu povezane sa bazom kako ne bi zauzimale mesto na serveru.</p>
+      <p style="color:white">Ocisti albume od fotografija koje su greskom unete ili nisu povezane sa bazom kako ne bi zauzimale mesto na serveru.</p>
     </div>
     <div class="col-md-12">
       <form id="clean" action="{{route('admin.clean-folder')}}" method="POST">

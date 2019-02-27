@@ -33,4 +33,8 @@ class HomeController extends Controller
         return view('admin.profile')->with(['page_name' => 'profile', 'admin' => $admin]);
     }
 
+    public function info() {
+        return view('admin.info')->with(['page_name' => 'info']);
+    }
+
 }

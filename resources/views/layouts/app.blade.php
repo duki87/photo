@@ -48,22 +48,22 @@
                     <ul class="navbar-nav mr-auto">
                       <li class="nav-item dropdown {{'albums'==$page_name?'active':''}} {{'add_album'==$page_name?'active':''}}">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Albumi
+                          <i class="fas fa-book-open"></i> Albumi
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                          <a class="dropdown-item" href="{{ route('admin.albums') }}">Svi albumi</a>
+                          <a class="dropdown-item" href="{{ route('admin.albums') }}"><i class="fas fa-book-open" style="color:#ffcc00"></i> Svi albumi</a>
                           <div class="dropdown-divider"></div>
-                          <a class="dropdown-item" href="{{ route('admin.add-album') }}">Dodaj album</a>
+                          <a class="dropdown-item" href="{{ route('admin.add-album') }}"><i class="fas fa-plus" style="color:#ffcc00"></i> Dodaj album</a>
                         </div>
                       </li>
                       <li class="nav-item">
-                          <a class="nav-link {{'add-photos'==$page_name?'active':''}} {{'add-info'==$page_name?'active':''}}" href="{{ route('admin.add-photos') }}">Dodaj fotografije</a>
+                          <a class="nav-link {{'add-photos'==$page_name?'active':''}} {{'add-info'==$page_name?'active':''}}" href="{{ route('admin.add-photos') }}"><i class="far fa-images"></i> Dodaj fotografije</a>
                       </li>
                       <li class="nav-item">
-                          <a class="nav-link {{'shootings'==$page_name?'active':''}}" href="{{ route('admin.shootings') }}">Zahtevi {{App\Http\Controllers\ShootingController::number_of_requests()}}</a>
+                          <a class="nav-link {{'shootings'==$page_name?'active':''}}" href="{{ route('admin.shootings') }}"><i class="fas fa-camera"></i> Zahtevi {{App\Http\Controllers\ShootingController::number_of_requests()}}</a>
                       </li>
                       <li class="nav-item">
-                          <a class="nav-link {{'cleaner'==$page_name?'active':''}}" href="{{ route('admin.cleaner') }}">Ocisti foldere</a>
+                          <a class="nav-link {{'cleaner'==$page_name?'active':''}}" href="{{ route('admin.cleaner') }}"><i class="fas fa-trash-alt"></i> Ocisti foldere</a>
                       </li>
                     </ul>
                     @endif
@@ -73,30 +73,33 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Prijavi se') }}</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Registracija') }}</a>
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item dropdown {{'profile'==$page_name?'active':''}}">
+                            <li class="nav-item dropdown {{'profile'==$page_name?'active':''}} {{'info'==$page_name?'active':''}}">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('front.index') }}" target="_blank">
-                                        Verzija za posetioce
+                                        <i class="far fa-eye" style="color:#ffcc00"></i> Verzija za posetioce
                                     </a>
                                     <a class="dropdown-item" href="{{ route('admin.profile') }}">
-                                        Profil
+                                        <i class="fas fa-user" style="color:#ffcc00"></i> Profil
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('admin.info') }}">
+                                        <i class="fas fa-info-circle" style="color:#ffcc00"></i> Info
                                     </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        <i class="fas fa-sign-out-alt" style="color:#ffcc00"></i> {{ __('Odjavi se') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
