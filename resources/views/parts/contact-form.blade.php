@@ -13,6 +13,9 @@
           <div class="alert alert-danger" id="form-errors" role="alert" style="display:none">
             Morate popuniti sva polja.
           </div>
+          <div class="alert alert-danger" id="email-form-error" role="alert" style="display:none">
+            Format e-maila nije ispravan.
+          </div>
           <div class="alert alert-success" id="form-success" role="alert" style="display:none">
             Uspesno ste poslali zahtev! Uskoro cemo Vas kontaktirati.
           </div>
@@ -24,7 +27,7 @@
           <input type="text" class="form-control" id="phone" name="phone" value="" placeholder="Broj telefona" onkeypress="return AllowNumbersOnly(event)" required>
         </div>
         <div class="form-group col-md-4">
-          <input type="email" class="form-control" id="email" name="email" value="" placeholder="E-mail" required>
+          <input type="email" class="form-control" onblur="return checkEmail()" id="email" name="email" value="" placeholder="E-mail" required>
         </div>
         <div class="form-group col-md-6">
           <input type="text" required class="form-control" autocomplete="off" id="city" name="city" value="" placeholder="Mesto" onkeyup="return get_results()">

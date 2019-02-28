@@ -70,7 +70,7 @@
     <script src="{{asset('js/jquery.vide.js')}}"></script>
     <script src="{{asset('js/jquery.counterup.min.js')}}"></script>
     <script src="{{asset('js/jquery.magnific-popup.min.js')}}"></script>
-    <script src="{{asset('js/waypoints.min.js')}}"></script>
+    <!-- <script src="{{asset('js/waypoints.min.js')}}"></script> -->
     <!-- <script src="js/form-validator.min.js"></script>
     <script src="js/contact-form-script.js"></script> -->
     <script src="{{asset('js/main.js')}}"></script>

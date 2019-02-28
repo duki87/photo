@@ -4,7 +4,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h2 style="color:white">Shooting Requests</h2>
+      <h2 style="color:white">Zahtevi za fotografisanjem</h2>
       <div class="" id="message">
         @if(Session::has('shooting_message'))
         <div class="alert alert-warning alert-dismissible fade show" role="alert">

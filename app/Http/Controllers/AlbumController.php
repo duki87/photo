@@ -17,7 +17,8 @@ class AlbumController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-      $albums = Album::with('photos')->get();
+      $albums = Album::with('photos')->paginate(6);
+      //$albums = Album::with('photos')->get();
       return view('admin.albums')->with(['albums' => $albums, 'page_name' => 'albums']);
     }
 

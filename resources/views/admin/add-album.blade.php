@@ -52,13 +52,15 @@
       var image_name = property.name;
       var image_extension = image_name.split('.').pop().toLowerCase();
       if(jQuery.inArray(image_extension, ["jpg","jpeg","png","gif"]) == -1) {
-        error_images = 'Allowed formats: gif, jpg, jpeg, png!';
+        error_images = 'Dozvoljeni formati: gif, jpg, jpeg, png!';
+        $('#message_images').removeClass('d-none');
         $('#message_images').html('<span class="text-danger">'+error_images+'</span>');
         return false;
       }
       var image_size = property.size;
       if(image_size > 5000000) {
-        error_images = 'Maximum file size: 5 MB!';
+        error_images = 'Maksimalna velicina fotografije: 5 MB!';
+        $('#message_images').removeClass('d-none');
         $('#message_images').html('<span class="text-danger">'+error_images+'</span>');
         return false;
       } else {

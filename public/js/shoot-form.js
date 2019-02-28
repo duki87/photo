@@ -1,3 +1,4 @@
+
 var cities = [
   'Beograd-Barajevo',
   'Beograd-Voždovac',
@@ -215,6 +216,14 @@ function AllowNumbersOnly(e) {
   }
 }
 
+function checkEmail() {
+  let email = $('#email').val();
+  if(validateEmail(email) == false) {
+    $("#email-form-error").slideDown("slow");
+    slideUpMessage('email-form-error');
+  }
+}
+
 $(document).on('submit', '#shooting_sch', function(e) {
   e.preventDefault();
   const email = $('#email').val();
@@ -224,44 +233,56 @@ $(document).on('submit', '#shooting_sch', function(e) {
   const place = $('#place').val();
   const shooting_event = $('#event').val();
   const date = $('#date').val();
+
   if(email == '' || name == '' || phone == '' || city == '' || place == '' || shooting_event == '' || date == '') {
     $("#form-errors").slideDown("slow");
     slideUpMessage('form-errors');
     return false;
-  } else {
-    var data = new FormData();
-    data.append('email', email);
-    data.append('name', name);
-    data.append('phone', phone);
-    data.append('city', city);
-    data.append('place', place);
-    data.append('event', shooting_event);
-    data.append('date', date);
-
-    $.ajaxSetup({
-       headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-       }
-   });
-    $.ajax({
-       url: "add-shooting",
-       type: "POST",
-       data: data,
-       contentType: false,
-       cache: false,
-       processData: false,
-       success: function(result) {
-         if(result.success == 'SHOOT_ADD') {
-           $("#form-success").slideDown("slow");
-           slideUpMessage('form-success');
-         }
-       }
-     });
   }
+  if(validateEmail(email) == false) {
+    $("#email-form-error").slideDown("slow");
+    slideUpMessage('email-form-error');
+    return false;
+  }
+  var data = new FormData();
+  data.append('email', email);
+  data.append('name', name);
+  data.append('phone', phone);
+  data.append('city', city);
+  data.append('place', place);
+  data.append('event', shooting_event);
+  data.append('date', date);
+
+  $.ajaxSetup({
+     headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+     }
+ });
+  $.ajax({
+     url: "add-shooting",
+     type: "POST",
+     data: data,
+     contentType: false,
+     cache: false,
+     processData: false,
+     success: function(result) {
+       if(result.success == 'SHOOT_ADD') {
+         $("#form-success").slideDown("slow");
+         //document.getElementById("shooting_sch").reset(); 
+         $("#shooting_sch").trigger('reset');
+         slideUpMessage('form-success');
+       }
+     }
+   });
 });
 
 function slideUpMessage(id) {
   setTimeout(function(){
     $("#"+id).slideUp("slow");
   }, 3000);
+}
+
+function validateEmail(email) {
+  var reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return reg.test(email);
 }
