@@ -56,6 +56,18 @@
                           <a class="dropdown-item" href="{{ route('admin.add-album') }}"><i class="fas fa-plus" style="color:#ffcc00"></i> Dodaj album</a>
                         </div>
                       </li>
+
+                      <li class="nav-item dropdown {{'add_videos'==$page_name?'active':''}} {{'videos'==$page_name?'active':''}}">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="fas fa-video"></i> Video
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <a class="dropdown-item" href="{{ route('admin.videos') }}"><i class="fas fa-video" style="color:#ffcc00"></i> Svi video klipovi</a>
+                          <div class="dropdown-divider"></div>
+                          <a class="dropdown-item" href="{{ route('admin.add-videos') }}"><i class="fas fa-plus" style="color:#ffcc00"></i> Dodaj video</a>
+                        </div>
+                      </li>
+
                       <li class="nav-item">
                           <a class="nav-link {{'add-photos'==$page_name?'active':''}} {{'add-info'==$page_name?'active':''}}" href="{{ route('admin.add-photos') }}"><i class="far fa-images"></i> Dodaj fotografije</a>
                       </li>

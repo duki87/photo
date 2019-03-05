@@ -48,6 +48,12 @@ Route::group(['middleware' => 'auth'], function() {
   Route::post('/admin-area/upload-photos', 'PhotoController@upload_photos')->name('admin.upload-photos');
   Route::get('/admin-area/add-info')->name('admin.add-info');
   Route::post('/admin-area/add-info', 'PhotoController@add_info')->name('admin.add-info');
+  //Video routes
+  Route::get('/admin-area/add-videos', 'VideoController@add_videos')->name('admin.add-videos');
+  Route::get('/admin-area/videos', 'VideoController@index')->name('admin.videos');
+  Route::post('/admin-area/upload-video', 'VideoController@upload_video')->name('admin.upload-video');
+  Route::post('/admin-area/edit-video', 'VideoController@update')->name('admin.edit-video');
+  Route::get('/admin-area/remove-video/{id}', 'VideoController@destroy')->name('admin.remove-video');
   //Cleaner routes
   Route::get('/admin-area/cleaner', 'PhotoController@cleaner')->name('admin.cleaner');
   Route::post('/admin-area/clean-folder', 'PhotoController@clean_folder')->name('admin.clean-folder');

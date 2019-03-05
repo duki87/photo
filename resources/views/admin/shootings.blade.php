@@ -63,7 +63,7 @@
       </div>
 
       <div class="modal-body">
-          Ime i prezime: {{$shooting->date}}<br>
+          Ime i prezime: {{$shooting->name}}<br>
           Mesto: {{$shooting->city}}<br>
           Adresa: {{$shooting->place}}<br>
           Datum: {{$shooting->date}}<br>
