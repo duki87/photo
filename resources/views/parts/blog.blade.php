@@ -8,80 +8,33 @@
       <p class="section-subtitle">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat, dignissimos! <br> Lorem ipsum dolor sit amet, consectetur.</p>
     </div>
     <div class="row">
-      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 blog-item">
+      @foreach($blogs as $blog)
+      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 blog-item mt-2">
         <!-- Blog Item Starts -->
-        <div class="blog-item-wrapper">
+        <div class="blog-item-wrapper p-3">
           <div class="blog-item-img">
             <a href="single-post.html">
-              <img src="img/blog/img1.jpg" alt="">
+              <img src="{{asset('img/blog/'.$blog->cover_image)}}" alt="" style="height:200px; object-fit:cover">
             </a>
           </div>
           <div class="blog-item-text">
             <div class="meta-tags">
-              <span class="date"><i class="lnr  lnr-clock"></i>2 Days Ago</span>
-              <span class="comments"><a href="#"><i class="lnr lnr-bubble"></i> 24 Comments</a></span>
+              <span class="date"><i class="lnr  lnr-clock"></i>{{date("d-m-Y", strtotime($blog->created_at))}}</span>
+              <!-- <span class="comments"><a href="#"><i class="lnr lnr-bubble"></i> 24 Comments</a></span> -->
+              <span class="comments float-right"><i class="lnr lnr-pencil"></i>{{$blog->author}}</span>
             </div>
             <h3>
-              <a href="single-post.html">How often should you tweet?</a>
+              <a href="single-post.html">{{$blog->title}}</a>
             </h3>
             <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...
+            {{substr($blog->text,0,100) }}
             </p>
-            <a href="single-post.html" class="btn-rm">Read More <i class="lnr lnr-arrow-right"></i></a>
+            <a href="{{route('front.blog', $blog->url)}}" class="btn-rm">Procitaj vise <i class="lnr lnr-arrow-right"></i></a>
           </div>
         </div>
         <!-- Blog Item Wrapper Ends-->
       </div>
-
-      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 blog-item">
-        <!-- Blog Item Starts -->
-        <div class="blog-item-wrapper">
-          <div class="blog-item-img">
-            <a href="single-post.html">
-              <img src="img/blog/img2.jpg" alt="">
-            </a>
-          </div>
-          <div class="blog-item-text">
-            <div class="meta-tags">
-              <span class="date"><i class="lnr  lnr-clock"></i>2 Days Ago</span>
-              <span class="comments"><a href="#"><i class="lnr lnr-bubble"></i> 24 Comments</a></span>
-            </div>
-            <h3>
-              <a href="single-post.html">Content is still king</a>
-            </h3>
-            <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...
-            </p>
-            <a href="single-post.html" class="btn-rm">Read More <i class="lnr lnr-arrow-right"></i></a>
-          </div>
-        </div>
-        <!-- Blog Item Wrapper Ends-->
-      </div>
-
-      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 blog-item">
-        <!-- Blog Item Starts -->
-        <div class="blog-item-wrapper">
-          <div class="blog-item-img">
-            <a href="single-post.html">
-              <img src="img/blog/img3.jpg" alt="">
-            </a>
-          </div>
-          <div class="blog-item-text">
-            <div class="meta-tags">
-              <span class="date"><i class="lnr  lnr-clock"></i>2 Days Ago</span>
-              <span class="comments"><a href="#"><i class="lnr lnr-bubble"></i> 24 Comments</a></span>
-            </div>
-            <h3>
-              <a href="single-post.html">Social media at work</a>
-            </h3>
-            <p>
-             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...
-            </p>
-            <a href="single-post.html" class="btn-rm">Read More <i class="lnr lnr-arrow-right"></i></a>
-          </div>
-        </div>
-        <!-- Blog Item Wrapper Ends-->
-      </div>
+      @endforeach
     </div>
   </div>
 </section> -->

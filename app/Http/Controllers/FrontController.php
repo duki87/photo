@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Album;
+use App\Video;
+use App\Blog;
 use Illuminate\Http\Request;
 
 class FrontController extends Controller
@@ -24,5 +26,20 @@ class FrontController extends Controller
       }
     }
     return view('albums')->with(['page_name' => 'albums', 'albums' => $albums]);
+  }
+
+  public function videos() {
+    $videos = Video::get();
+    return view('videos')->with(['page_name' => 'videos', 'videos' => $videos]);
+  }
+
+  public function blogs() {
+    $blogs = Blog::get();
+    return view('blog')->with(['page_name' => 'blog', 'blogs' => $blogs]);
+  }
+
+  public function get_blog_text($url) {
+    $blog = Blog::where(['url' => $url])->with('images')->first();
+    return view('single-blog')->with(['page_name' => 'blog', 'blog' => $blog]);
   }
 }

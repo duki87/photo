@@ -162,8 +162,8 @@ class PhotoController extends Controller
     $imagesArr = array();
     $geolocationArr = array();
     $cardArr = array();
-    $extArray = ['jpg', 'gif', 'png', 'tiff', 'jpeg'];
-    $dir_id =
+    //$extArray = ['jpg', 'gif', 'png', 'tiff', 'jpeg'];
+    //$dir_id =
     $album = Album::where(['id' => $request->album])->first();
     $directory = $album->title;
     $images = $request->file('photos');

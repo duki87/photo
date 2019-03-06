@@ -21,7 +21,7 @@ class VideoController extends Controller
     }
 
     public function add_videos() {
-        return view('admin.add-videos')->with(['page_name' => 'add_videos']);
+        return view('admin.add-videos')->with(['page_name' => 'add-videos']);
     }
 
     public function upload_video(Request $request) {

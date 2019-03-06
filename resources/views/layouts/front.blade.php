@@ -36,8 +36,10 @@
     @yield('contact-form')
     @yield('portfolios')
     @yield('blog')
+    @yield('single-blog')
     @yield('gallery')
     @yield('albums')
+    @yield('video')
 
     <!-- Go To Top Link -->
     <a href="#" class="back-to-top">

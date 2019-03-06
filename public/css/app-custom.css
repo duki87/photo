@@ -10,3 +10,7 @@
   background-color:red;
   color:white;
 }
+
+.cover-border {
+  border: 1px solid green;
+}

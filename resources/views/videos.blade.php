@@ -1,0 +1,10 @@
+@extends('layouts.front')
+@section('head')
+  @include('parts.head')
+@endsection
+@section('video')
+  @include('parts.video')
+@endsection
+@section('footer')
+  @include('parts.footer')
+@endsection

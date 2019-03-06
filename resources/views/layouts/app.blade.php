@@ -26,6 +26,9 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+    <!-- Include stylesheet -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -57,7 +60,7 @@
                         </div>
                       </li>
 
-                      <li class="nav-item dropdown {{'add_videos'==$page_name?'active':''}} {{'videos'==$page_name?'active':''}}">
+                      <li class="nav-item dropdown {{'add-videos'==$page_name?'active':''}} {{'videos'==$page_name?'active':''}}">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <i class="fas fa-video"></i> Video
                         </a>
@@ -76,6 +79,17 @@
                       </li>
                       <li class="nav-item">
                           <a class="nav-link {{'cleaner'==$page_name?'active':''}}" href="{{ route('admin.cleaner') }}"><i class="fas fa-trash-alt"></i> Ocisti foldere</a>
+                      </li>
+
+                      <li class="nav-item dropdown {{'add-blog'==$page_name?'active':''}} {{'blog'==$page_name?'active':''}}">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="fas fa-blog"></i> Blog
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <a class="dropdown-item" href="{{ route('admin.blog') }}"><i class="fas fa-align-justify" style="color:#ffcc00"></i> Svi tekstovi</a>
+                          <div class="dropdown-divider"></div>
+                          <a class="dropdown-item" href="{{ route('admin.add-blog') }}"><i class="fas fa-plus" style="color:#ffcc00"></i> Dodaj tekst</a>
+                        </div>
                       </li>
                     </ul>
                     @endif

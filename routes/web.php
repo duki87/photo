@@ -17,8 +17,11 @@
 Route::get('/', 'FrontController@index')->name('front.index');
 Route::get('/albums', 'FrontController@albums')->name('front.albums');
 Route::get('/albums/{id}', 'FrontController@gallery')->name('front.gallery');
+Route::get('/video', 'FrontController@videos')->name('front.videos');
 
 Route::post('/add-shooting', 'ShootingController@create')->name('front.add-shooting');
+Route::get('/blog', 'FrontController@blogs')->name('front.blogs');
+Route::get('/blog/{url}', 'FrontController@get_blog_text')->name('front.blog');
 
 Auth::routes();
 
@@ -57,6 +60,10 @@ Route::group(['middleware' => 'auth'], function() {
   //Cleaner routes
   Route::get('/admin-area/cleaner', 'PhotoController@cleaner')->name('admin.cleaner');
   Route::post('/admin-area/clean-folder', 'PhotoController@clean_folder')->name('admin.clean-folder');
+  //Blog routes
+  Route::get('/admin-area/blog', 'BlogController@index')->name('admin.blog');
+  Route::get('/admin-area/add-blog', 'BlogController@add_blog')->name('admin.add-blog');
+  Route::post('/admin-area/create-blog', 'BlogController@create')->name('admin.create-blog');
   //Profile and update profile routes
   Route::get('/admin-area/profile', 'HomeController@profile')->name('admin.profile');
   Route::post('/admin-area/update-profile', 'Auth\UpdateProfileController@update_profile')->name('admin.update-profile');

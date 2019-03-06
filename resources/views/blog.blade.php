@@ -1,0 +1,10 @@
+@extends('layouts.front')
+@section('head')
+  @include('parts.head')
+@endsection
+@section('blog')
+  @include('parts.blog')
+@endsection
+@section('footer')
+  @include('parts.footer')
+@endsection

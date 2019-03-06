@@ -35,13 +35,13 @@
           <a class="nav-link custom-nav-link page-scroll" href="#services">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link page-scroll" href="#portfolios">Works</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link page-scroll {{ 'albums' == $page_name ? 'active' : '' }}" href="{{route('front.albums')}}">Galerije slika</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link page-scroll" href="#contact">Contact</a>
+          <a class="nav-link page-scroll {{ 'videos' == $page_name ? 'active' : '' }}" href="{{route('front.videos')}}">Video</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link page-scroll {{ 'blog' == $page_name ? 'active' : '' }}" href="{{route('front.blogs')}}">Blog</a>
         </li>
       </ul>
       <ul class="navbar-nav ml-auto mt-2">
