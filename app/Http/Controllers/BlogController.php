@@ -26,6 +26,10 @@ class BlogController extends Controller
         return view('admin.add-blog')->with(['page_name' => 'add-blog']);
     }
 
+    public function edit($id) {
+        $blog = Blog::where(['id' => $id])->with('images')->first();
+        return view('admin.edit-blog')->with(['page_name' => 'blog', 'blog' => $blog]);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -81,6 +85,23 @@ class BlogController extends Controller
        return redirect('/admin-area/blog')->with(['blog_message' => 'Tekst je uspesno dodat.']);
      }
 
+     public function destroy($id) {
+        $blog = Blog::where(['id' => $id])->with('images')->first();
+        $arr = explode('/', $blog->cover_image);
+        $directory = $arr[0];
+        foreach ($blog->images as $image) {
+          Storage::disk('public_folder')->delete('img/blog/'.$image->image);
+          BlogImages::where(['id' => $image->id])->delete();
+        }
+        Blog::where(['id' => $id])->delete();
+        $folder_delete = Storage::disk('public_folder')->deleteDirectory('img/blog/'.$directory);
+        if($folder_delete) {
+          return redirect()->back()->with('blog_message', 'Tekst je uspesno obrisan.');
+        } else {
+          return redirect()->back()->with('blog_message_err', 'Doslo je do greske. Pokusajte ponovo.');
+        }
+     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -104,17 +125,6 @@ class BlogController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Blog  $blog
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Blog $blog)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -122,17 +132,6 @@ class BlogController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Blog $blog)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Blog  $blog
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Blog $blog)
     {
         //
     }

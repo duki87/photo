@@ -64,6 +64,8 @@ Route::group(['middleware' => 'auth'], function() {
   Route::get('/admin-area/blog', 'BlogController@index')->name('admin.blog');
   Route::get('/admin-area/add-blog', 'BlogController@add_blog')->name('admin.add-blog');
   Route::post('/admin-area/create-blog', 'BlogController@create')->name('admin.create-blog');
+  Route::get('/admin-area/remove-blog/{id}', 'BlogController@destroy')->name('admin.remove-blog');
+  Route::get('/admin-area/edit-blog/{id}', 'BlogController@edit')->name('admin.edit-blog');
   //Profile and update profile routes
   Route::get('/admin-area/profile', 'HomeController@profile')->name('admin.profile');
   Route::post('/admin-area/update-profile', 'Auth\UpdateProfileController@update_profile')->name('admin.update-profile');

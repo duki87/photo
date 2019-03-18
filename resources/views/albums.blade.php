@@ -6,8 +6,6 @@
 @section('albums')
   @include('parts.albums')
 @endsection
-@section('footer')
-<script src="js/img-gallery.js"></script>
-  
+@section('footer')  
   @include('parts.footer')
 @endsection

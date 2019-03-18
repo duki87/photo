@@ -12,8 +12,8 @@
 @section('portfolios')
   @include('parts.portfolios')
 @endsection
-@section('blog')
-  @include('parts.blog')
+@section('front-blog')
+  @include('parts.front-blog')
 @endsection
 
 @section('footer')

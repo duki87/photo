@@ -4,7 +4,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h2 style="color:white">Dodaj novi tekst na blog</h2>
+      <h2 style="color:white">Izmeni tekst: <b style="color:yellow">{{$blog->title}}</b></h2>
       <div class="" id="message">
         @if(Session::has('blog_message'))
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -22,18 +22,18 @@
           @csrf
           <div class="form-group col-md-6">
             <label for="" style="color:white">Naslov teksta</label>
-            <input type="text" name="title" id="title" class="form-control" placeholder="Unesi naslov teksta" value="" required>
+            <input type="text" name="title" id="title" class="form-control" placeholder="Unesi naslov teksta" value="{{$blog->title}}" required>
           </div>
           <div class="form-group col-md-6">
             <label for="" style="color:white">Ime autora</label>
-            <input type="text" name="author" id="author" class="form-control" placeholder="Unesi ime autora" value="{{ Auth::user()->name }}" required>
+            <input type="text" name="author" id="author" class="form-control" placeholder="Unesi ime autora" value="{{$blog->author}}" required>
           </div>
            <div class="col-md-12 mt-2">
              <!-- Create the editor container -->
              <!-- <div id="editor" style="background-color:white; height:500px">
 
              </div> -->
-             <textarea name="text" id="text" class="form-control" style="height:450px"></textarea>
+             <textarea name="text" id="text" class="form-control" style="height:450px">{{$blog->text}}</textarea>
            </div>
            <div class="col-md-6 mt-2">
              <div class="custom-file">
@@ -44,6 +44,16 @@
              </div>
            </div>
            <div class="col-md-12 mt-2">
+            <span style="color:yellow">Fotografije</span>
+            <div class="row" id="blog_photos" style="position:relative">
+              @foreach($blog->images as $image)
+              <div class="col-md-3 {{$image->image == $blog->cover_image ? 'cover-border' : ''}}">
+                <img class="" src="{{asset('img/blog/'.$image->image)}}" data-img="{{$image->image}}" alt="" style="object-fit:cover; width:100%; height:150px">
+              </div>
+              @endforeach
+            </div>
+          </div>
+           <div class="col-md-12 mt-2">
             <span style="color:yellow">Pregled fotografija <i>(Klikom na fotografiju oznacite naslovnu fotografiju)</i> </span>
             <div class="row" id="preview_photos" style="position:relative">
 
@@ -52,7 +62,7 @@
          <div class="form-group col-md-12">
            <button type="submit" disabled id="submit-btn" class="btn btn-success mt-5" name="submit">
              <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-             <span id="btntext" class="">Dodaj tekst</span>
+             <span id="btntext" class="">Izmeni tekst</span>
            </button>
          </div>
       </form>

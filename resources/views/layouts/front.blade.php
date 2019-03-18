@@ -25,6 +25,9 @@
     <link rel="stylesheet" href="{{asset('css/responsive.css')}}">
     <link rel="stylesheet" href="{{asset('css/img-gallery.css')}}">
     <link rel="stylesheet" href="{{asset('css/albums.css')}}">
+    <link rel="stylesheet" href="{{asset('css/blog.css')}}">
+    <!--nanogallery2 - IF DON'T WANT THIS GALLERY DELETE LINK! -->
+    <link href="https://unpkg.com/nanogallery2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
   </head>
@@ -40,6 +43,7 @@
     @yield('gallery')
     @yield('albums')
     @yield('video')
+    @yield('front-blog')
 
     <!-- Go To Top Link -->
     <a href="#" class="back-to-top">
@@ -78,6 +82,8 @@
     <script src="{{asset('js/main.js')}}"></script>
     <script src="{{asset('js/shoot-form.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+    <script src="{{asset('js/fancy-box.js')}}"></script>
+    <script src="{{asset('js/img-gallery.js')}}"></script>
     @yield('footer')
   </body>
 </html>

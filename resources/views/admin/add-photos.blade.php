@@ -25,10 +25,10 @@
       </div>
       <hr style="background-color: yellow; height: 1px; border: 0;">
     </div>
-    <div class="col-md-12">
+    <div class="col-md-6">
       <form id="add-photos" action="{{route('admin.upload-photos')}}" method="POST" enctype="multipart/form-data">
         @csrf
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-12">
           <select name="album" id="album" class="form-control" required>
             <option value="">Izaberite album</option>
             @foreach($albums as $album)
@@ -36,24 +36,26 @@
             @endforeach
           </select>
         </div>
-        <div class="form-group col-md-6">
-          <div class="custom-file">
+        <div class="form-group col-md-12">
+          <div class="custom-file" id="file-input">
             <input type="file" class="custom-file-input" id="photos" name="photos[]" multiple>
             <label class="custom-file-label" for="customFile">Izaberite fotografije</label>
             <button type="button" name="button" class="btn btn-danger btn-sm mt-2 d-none" id="remove-all">Izbrisi sve ucitane fotografije</button>
             <p id="message_images" class="text-danger d-none"></p>
           </div>
         </div>
-        <div class="row" id="preview_files">
-
-        </div>
-       <div class="form-group" id="buttons">
+       <div class="col-md-12" id="buttons">
          <button type="submit" disabled id="submit-btn" class="btn btn-success mt-5" name="submit">
            <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
            <span id="btntext" class="">Dodaj fotografije</span>
          </button>
        </div>
      </form>
+    </div>
+    <div class="col-md-6">
+      <div class="row" id="preview_files">
+
+      </div>
     </div>
   </div>
 </div>
@@ -79,7 +81,7 @@
             const reader = new FileReader();
             reader.onload = function(e) {
               let card =
-              '<div class="col-md-2 ml-2 mt-2" style="position:relative">'+
+              '<div class="col-md-4 mt-2" style="position:relative">'+
                 '<img src="'+reader.result+'" class="rounded" alt="..." style="width:100%; height:100%; object-fit:cover">'+
               '</div>';
                 // '<div class="col-md-2 ml-2 mt-2" style="position:relative">'+
@@ -96,7 +98,9 @@
           }
         }
         if(storedFiles.length > 0) {
-          $('#buttons').append('<button id="reset_input" title="Odbaci sve fotografije" class="btn btn-danger d-inline">Odbaci sve</button>');
+          if($('.reset_input').length < 1) {
+            $('#file-input').append('<button id="reset_input" title="Odbaci sve fotografije" class="btn btn-danger btn-sm mt-2 d-inline reset_input">Odbaci sve</button>');
+          }
         }
       }
     });

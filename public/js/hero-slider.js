@@ -16,10 +16,13 @@ $(document).ready(function() {
     // });
 
     $('#hero-area').fadeOut(1000, function () {
-        $('#hero-area').css('background-size', 'cover');
-      $(this).css('background', 'url(img/'+arr[i]+') fixed no-repeat').fadeIn(1000);
+      $('#hero-area').css('background-size', 'cover');
+      // new changes
+      let path = 'http://'+window.location.hostname+'/photo/public/img/';
+      console.log(path);
+      // $(this).css('background', 'url(img/'+arr[i]+') fixed no-repeat').fadeIn(1000);
+      $(this).css('background', 'url('+path+arr[i]+') fixed no-repeat').fadeIn(1000);
       $(this).css('background-size', 'cover');
-      //$(this).fadeIn(1000);
     });
 
     // $('#hero-area').animate({ opacity: 0}, 1000, function() {

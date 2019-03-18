@@ -13,6 +13,14 @@
           </button>
         </div>
         @endif
+        @if(Session::has('blog_message_err'))
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>{{Session::get('blog_message_err')}}</strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        @endif
       </div>
     </div>
 
@@ -27,9 +35,8 @@
         <div class="card-body">
           <h3 class="card-title d-inline" style="color:yellow">{{$blog->title}}</h3><h5 class="text-secondary d-inline"></h5>
           <div class="mt-2">
-            <a href="" class="btn btn-primary d-inline" title="Izmeni informacije o albumu"><i class="fas fa-edit"></i></a>
-            <a href="" class="btn btn-warning d-inline" title="Izmeni fotografije u albumu"><i class="far fa-images"></i></a>
-            <a href="" class="btn btn-danger d-inline" title="Obrisi album" onclick="return confirm('Da li ste sigurni da zelite da obrisete ovaj tekst?')"><i class="fas fa-trash-alt"></i></a>
+            <a href="{{route('admin.edit-blog', $blog->id)}}" class="btn btn-primary d-inline" title="Izmeni blog"><i class="fas fa-edit"></i></a>
+            <a href="{{route('admin.remove-blog', $blog->id)}}" class="btn btn-danger d-inline" title="Obrisi blog" onclick="return confirm('Da li ste sigurni da zelite da obrisete ovaj tekst?')"><i class="fas fa-trash-alt"></i></a>
           </div>
         </div>
       </div>

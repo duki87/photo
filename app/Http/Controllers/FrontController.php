@@ -10,12 +10,13 @@ use Illuminate\Http\Request;
 class FrontController extends Controller
 {
   public function index() {
-    return view('index')->with(['page_name' => 'index']);
+    $blogs = Blog::orderBy('created_at', 'desc')->take(3)->get();
+    return view('index')->with(['page_name' => 'index', 'blogs' => $blogs]);
   }
 
   public function gallery($id) {
     $album = Album::where(['id' => $id])->with('photos')->first();
-    return view('gallery')->with(['page_name' => 'gallery', 'album' => $album]);
+    return view('gallery2')->with(['page_name' => 'gallery', 'album' => $album]);
   }
 
   public function albums() {

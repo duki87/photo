@@ -55,30 +55,24 @@
   </div>
 
   <!-- Mobile Menu Start -->
-  <ul class="mobile-menu">
+  <ul class="mobile-menu" style="">
      <li>
-        <a class="page-scroll" href="#hero-area">Home</a>
+        <a class="page-scroll-m {{ 'index' == $page_name ? 'active-mobile' : '' }}" href="{{route('front.index')}}">Pocetna</a>
       </li>
       <li>
-        <a class="page-scroll" href="#services">Services</a>
+        <a class="page-scroll-m" href="#features">About</a>
       </li>
       <li>
-        <a class="page-scroll" href="#features">Features</a>
+        <a class="page-scroll-m {{ 'albums' == $page_name ? 'active-mobile' : '' }}" href="{{route('front.albums')}}">Galerija slika</a>
       </li>
       <li>
-        <a class="page-scroll" href="#portfolios">Works</a>
-      </li>
-      <li>
-        <a class="page-scroll" href="#pricing">Pricing</a>
-      </li>
-      <li>
-        <a class="page-scroll" href="#team">Team</a>
+        <a class="page-scroll-m {{ 'videos' == $page_name ? 'active-mobile' : '' }}" href="{{route('front.videos')}}">Video</a>
       </li>
       <li >
-        <a class="page-scroll" href="#blog">Blog</a>
+        <a class="page-scroll-m {{ 'blog' == $page_name ? 'active-mobile' : '' }}" href="{{route('front.blogs')}}">Blog</a>
       </li>
       <li>
-        <a class="page-scroll" href="#contact">Contact</a>
+        <a class="page-scroll-m" href="#contact">Contact</a>
       </li>
   </ul>
   <!-- Mobile Menu End -->

@@ -56,7 +56,11 @@ p {
   line-height: 26px;
 }
 
-a:hover, a:focus {
+a:hover{
+  color: black;
+}
+
+a:focus {
   color: #ffff66;
 }
 
@@ -568,6 +572,23 @@ button:focus {
   display: none;
 }
 
+.page-scroll:hover {
+  background-color:black;
+}
+
+.page-scroll-m {
+  color:#666 !important;
+}
+
+.page-scroll-m:hover {
+  color:black !important;
+  background-color:#ffff66 !important;
+}
+
+.active-mobile {
+  background-color:#ffff66;
+}
+
 .slicknav_menu {
   display: none;
 }
@@ -603,6 +624,7 @@ button:focus {
     color: #ffff66;
   }
 }
+
 
 /* ==========================================================================
   5. Services section
@@ -1115,7 +1137,9 @@ button:focus {
   13. Blog
    ========================================================================== */
 #blog .blog-item-wrapper {
-  background: #fff;
+  background-color:rgba(0,0,0,0.3);
+  border:1px solid #ffff66;
+  border-radius:10px;
   border-radius: 0px;
   -webkit-transition: transform 0.2s linear, -webkit-box-shadow 0.2s linear;
   -moz-transition: transform 0.2s linear, -moz-box-shadow 0.2s linear;
@@ -1158,6 +1182,26 @@ button:focus {
 #blog .blog-item-text p {
   line-height: 25px;
   margin-bottom: 20px;
+}
+
+.blog-text {
+  color:white;
+  padding: 15px;
+}
+
+.blog-image {
+  width:400px;
+  float: left;
+  margin-right:20px;
+}
+
+@media only screen and (max-width: 800px) {
+  .blog-text {
+    float: left;
+  }
+  .blog-image {
+    width: 100%;
+  }
 }
 
 .meta-tags {

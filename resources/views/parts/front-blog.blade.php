@@ -3,9 +3,9 @@
   <!-- Container Starts -->
   <div class="container">
     <div class="section-header">
-      <h2 class="section-title">Recent Blog</h2>
+      <h2 class="section-title">Najnoviji tekstovi na blogu</h2>
       <hr class="lines">
-      <p class="section-subtitle">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat, dignissimos! <br> Lorem ipsum dolor sit amet, consectetur.</p>
+      <p class="section-subtitle">Procitajte nase tekstove o najnovijim desavanjima iz oblasti fotografije.</p>
     </div>
     <div class="row">
       @if(isset($blogs))

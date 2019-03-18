@@ -53,7 +53,7 @@
   .slicknav_nav ul {
     display: block; }
   .slicknav_nav li {
-    display: block; 
+    display: block;
     line-height: 30px;
   }
   .slicknav_nav li:not(:first-child){
@@ -84,14 +84,15 @@
   box-sizing: border-box;
 }
 .slicknav_menu ul{
-  background: #fff;
+  background-color:rgba(0,0,0,0.8)
 }
   .slicknav_menu * {
     box-sizing: border-box; }
   .slicknav_menu .slicknav_menutxt {
     color: #fff;
     font-weight: bold;
-    text-shadow: 0 1px 3px #000; }
+    text-shadow: 0 1px 3px #000;
+  }
 
 .slicknav_btn {
   border: 1px solid;
@@ -112,31 +113,45 @@
   padding: 0;
   width: 100%;
 }
-  .slicknav_nav ul {
-    list-style: none;
-    overflow: hidden;
-    padding: 0;
-    margin: 0 0 0 20px; }
-  .slicknav_nav .slicknav_row {
-    padding: 5px 10px;
-    margin: 2px 5px; }
-  .slicknav_nav a {
-    padding: 5px 15px;
-    margin: 2px 5px;
-    text-decoration: none;
-    color: #666; }
-  .slicknav_nav .slicknav_txtnode {
-    margin-left: 15px; }
-  .slicknav_nav .slicknav_item a {
-    padding: 0;
-    margin: 0; }
-  .slicknav_nav .slicknav_parent-link a {
-    padding: 0;
-    margin: 0; }
+
+.slicknav_nav ul {
+  list-style: none;
+  overflow: hidden;
+  padding: 0;
+  margin: 0 0 0 20px;
+}
+.slicknav_nav .slicknav_row {
+  padding: 5px 10px;
+  margin: 2px 5px;
+}
+.slicknav_nav a {
+  padding: 5px 15px;
+  margin: 2px 5px;
+  text-decoration: none;
+  color: #666;
+}
+
+.slicknav_nav .slicknav_txtnode {
+  margin-left: 15px; }
+.slicknav_nav .slicknav_item a {
+  padding: 0;
+  margin: 0; }
+.slicknav_nav .slicknav_parent-link a {
+  padding: 0;
+  margin: 0; }
 
 .slicknav_brand {
-  color: #fff;
-  font-size: 18px;
-  line-height: 30px;
-  padding: 7px 12px;
-  height: 44px; }
+color: #fff;
+font-size: 18px;
+line-height: 30px;
+padding: 7px 12px;
+height: 44px;
+}
+
+.slicknav_brand:hover {
+background-color: #ffff66;
+font-size: 18px;
+line-height: 30px;
+padding: 7px 12px;
+height: 44px;
+}

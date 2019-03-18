@@ -21,10 +21,10 @@
       <form id="add-album" action="{{route('admin.add-new-album')}}" method="POST">
         @csrf
         <div class="form-group">
-          <input type="text" name="title" id="title" class="form-control" placeholder="Add Album Title" value="" required>
+          <input type="text" name="title" id="title" class="form-control" placeholder="Unesi naziv albuma" value="" required>
         </div>
         <div class="form-group">
-          <textarea name="description" id="description" class="form-control" placeholder="Add Album Description" value=""></textarea>
+          <textarea name="description" id="description" class="form-control" placeholder="Unesi opis albuma" value=""></textarea>
         </div>
        <div class="custom-file">
          <input type="file" class="custom-file-input" id="album_cover" name="album_cover">
@@ -38,7 +38,7 @@
      </form>
     </div>
     <div class="col-md-6">
-      <span style="color:yellow">Preview Cover</span>
+      <span style="color:yellow">Pregled naslovne fotografije</span>
       <div class="" id="preview_cover" style="position:relative">
 
       </div>
