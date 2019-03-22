@@ -47,8 +47,9 @@
             <span style="color:yellow">Fotografije</span>
             <div class="row" id="blog_photos" style="position:relative">
               @foreach($blog->images as $image)
-              <div class="col-md-3 {{$image->image == $blog->cover_image ? 'cover-border' : ''}}">
+              <div id="{{$image->id}}" class="col-md-3 mt-2 {{$image->image == $blog->cover_image ? 'cover-border' : ''}} blog-image" style="position:relative" data-photo="{{$image->image}}">
                 <img class="" src="{{asset('img/blog/'.$image->image)}}" data-img="{{$image->image}}" alt="" style="object-fit:cover; width:100%; height:150px">
+                <button type="button" class="btn btn-danger remove_photo" style="position:absolute; top:10px; right:20px" name="button" data-remove="{{$image->id}}">x</button>
               </div>
               @endforeach
             </div>
@@ -69,18 +70,38 @@
     </div>
   </div>
 </div>
-<!-- Main Quill library -->
-<!-- Include the Quill library -->
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-<!-- Initialize Quill editor -->
-<script>
-  var quill = new Quill('#editor', {
-    theme: 'snow'
-  });
-</script>
+
 <script type="text/javascript">
   $(document).ready(function() {
     var storedFiles = [];
+    $(document).on('click', '.remove_photo', function(e) {
+      e.preventDefault();
+      var remove = $(this).attr('data-remove');
+      var form_data = new FormData();
+      form_data.append('id', remove);
+      $.ajaxSetup({
+         headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         }
+     });
+      $.ajax({
+         url: "{{url('admin-area/remove-blog-photo')}}",
+         type: "POST",
+         data: form_data,
+         dataType: 'json',
+         contentType: false,
+         cache: false,
+         processData: false,
+         success: function(result) {
+           if(result.success == 'PHOTO_REMOVE') {
+             $('#'+remove).remove();
+             $('#message_images').removeClass('d-none');
+             $('#message_images').html("Fotografija je uspesno obrisana.");
+           }
+         }
+       });
+    });
+
     //upload photos
     $(document).on('change', '#photos', function(e) {
       e.preventDefault();

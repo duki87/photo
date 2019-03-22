@@ -102,6 +102,15 @@ class BlogController extends Controller
         }
      }
 
+     public function remove_photo(Request $request) {
+       $image = BlogImages::where(['id' => $request->id])->first();
+       $removeImg = Storage::disk('public_folder')->delete('img/blog/'.$image->image);
+       $removeData = BlogImages::where(['id' => $request->id])->delete();
+       if($removeData) {
+         return response()->json(['success' => 'PHOTO_REMOVE']);
+       }
+     }
+
     /**
      * Store a newly created resource in storage.
      *
