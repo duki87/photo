@@ -104,6 +104,8 @@
       $source[0].src = URL.createObjectURL(this.files[0]);
       $source.parent()[0].load();
       $('#submit-btn').prop('disabled', false);
+      $('#message_video').removeClass('d-none');
+      $('#message_video').html('Video je uspesno ucitan!');
     });
   });
 </script>

@@ -41,6 +41,13 @@ class FrontController extends Controller
 
   public function get_blog_text($url) {
     $blog = Blog::where(['url' => $url])->with('images')->first();
+    if(!$blog) {
+      return redirect('/error');
+    }
     return view('single-blog')->with(['page_name' => 'blog', 'blog' => $blog]);
+  }
+
+  public function error() {
+    return view('errors.404');
   }
 }

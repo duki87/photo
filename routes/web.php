@@ -13,7 +13,7 @@
 
 // Route::get('/', function () {
 //     return view('index');
-// });
+// }); 
 Route::get('/', 'FrontController@index')->name('front.index');
 Route::get('/albums', 'FrontController@albums')->name('front.albums');
 Route::get('/albums/{id}', 'FrontController@gallery')->name('front.gallery');
@@ -22,6 +22,7 @@ Route::get('/video', 'FrontController@videos')->name('front.videos');
 Route::post('/add-shooting', 'ShootingController@create')->name('front.add-shooting');
 Route::get('/blog', 'FrontController@blogs')->name('front.blogs');
 Route::get('/blog/{url}', 'FrontController@get_blog_text')->name('front.blog');
+Route::get('/blog/error', 'FrontController@error')->name('front.error');
 
 Auth::routes();
 
@@ -67,6 +68,8 @@ Route::group(['middleware' => 'auth'], function() {
   Route::get('/admin-area/remove-blog/{id}', 'BlogController@destroy')->name('admin.remove-blog');
   Route::get('/admin-area/edit-blog/{id}', 'BlogController@edit')->name('admin.edit-blog');
   Route::post('/admin-area/remove-blog-photo', 'BlogController@remove_photo')->name('admin.remove-blog-photo');
+  Route::post('/admin-area/add-more-blog-photos', 'BlogController@add_more_photos')->name('admin.add-more-blog-photos');
+  Route::post('/admin-area/update-blog', 'BlogController@update_blog')->name('admin.update-blog');
   //Profile and update profile routes
   Route::get('/admin-area/profile', 'HomeController@profile')->name('admin.profile');
   Route::post('/admin-area/update-profile', 'Auth\UpdateProfileController@update_profile')->name('admin.update-profile');

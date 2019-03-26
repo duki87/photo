@@ -28,7 +28,10 @@ class BlogController extends Controller
 
     public function edit($id) {
         $blog = Blog::where(['id' => $id])->with('images')->first();
-        return view('admin.edit-blog')->with(['page_name' => 'blog', 'blog' => $blog]);
+        $cover_photo = $blog->cover_image;
+        $explode = explode('/', $cover_photo);
+        $folder = $explode[0];
+        return view('admin.edit-blog')->with(['page_name' => 'blog', 'blog' => $blog, 'folder' => $folder]);
     }
     /**
      * Show the form for creating a new resource.
@@ -111,37 +114,65 @@ class BlogController extends Controller
        }
      }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+     public function add_more_photos(Request $request) {
+       $validatorErrors = array();
+       $fileNames = array();
+       $watermark = 'img/watermark.png';
+       if($request->hasFile('files')) {
+         $fileInfo = array();
+         $files = $request->file('files');
+         foreach ($files as $file) {
+           $validator = Validator::make(
+              array('files' => $file),
+              array('files' => 'required|mimes:jpeg,png,jpg,gif|image|max:8000')
+           );
+           $tmp_name = $file->getClientOriginalName();
+           $extension = $file->getClientOriginalExtension();
+           if($validator->fails()) {
+             $validatorErrors[] = $tmp_name.'.'.$extension.' => '.$validator->getMessageBag()->first();
+             continue;
+           }
+           $name = substr( base_convert( time(), 10, 36 ) . md5( microtime() ), 0, 16 ).'.'.$extension;
+           $photo = Image::make($file)
+                     ->resize(1024, null, function ($constraint) {
+                       $constraint->aspectRatio();
+                     })
+                     ->insert($watermark, 'bottom-left', 10, 10)
+                     ->save('img/blog/'.$request->folder_name.'/'.$name);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Blog  $blog
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Blog $blog)
-    {
-        //
-    }
+           $blogImages = new BlogImages;
+           $blogImages->blog_id = $request->blog_id;
+           $blogImages->image = $request->folder_name.'/'.$name;
+           $blogImages->save();
+           $fileInfo['id'] = $blogImages->id;
+           $fileInfo['image'] = $request->folder_name.'/'.$name;
+           $fileInfo['src'] = url('/') .'/img/blog/'. $request->folder_name.'/'.$name;
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Blog  $blog
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Blog $blog)
-    {
-        //
+           $fileNames[] = $fileInfo;
+         }
+         return response()->json(['success' => $fileNames, 'errors' => $validatorErrors]);
+       }
+     }
+
+    public function update_blog(Request $request) {
+      $cover_photo = '';
+      if(!empty($request->cover_photo)) {
+        $cover_photo = $request->cover_photo;
+      } else {
+        $blogImages = BlogImages::where(['blog_id' => $request->blog_id])->get();
+        $cover_photo = $blogImages[0]['image'];
+        if(empty($cover_photo)) {
+          $cover_photo = 'default.jpg';
+        }
+      }
+      $blog = Blog::where(['id' => $request->blog_id])->update([
+        'title' => $request->title,
+        'text' => $request->text,
+        'cover_image' => $cover_photo,
+        'author' => $request->author
+      ]);
+      if($blog) {
+        return redirect('/admin-area/blog')->with('blog_message', 'Uspesno ste uneli izmene u blogu '.$request->title.'.');
+      }
     }
 }
