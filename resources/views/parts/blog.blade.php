@@ -3,9 +3,11 @@
   <!-- Container Starts -->
   <div class="container">
     <div class="section-header">
-      <h2 class="section-title">Recent Blog</h2>
+      <h2 class="section-title" style="color:white">Blog</h2>
       <hr class="lines">
-      <p class="section-subtitle">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat, dignissimos! <br> Lorem ipsum dolor sit amet, consectetur.</p>
+      <p class="section-subtitle" style="color:grey">
+        Теkstovi o fotografiji koje smo mi napisali i tekstovi koje prenosimo sa drugih portala.
+      </p>
     </div>
     <div class="row">
       @if(isset($blogs))

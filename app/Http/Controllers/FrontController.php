@@ -35,7 +35,7 @@ class FrontController extends Controller
   }
 
   public function blogs() {
-    $blogs = Blog::get();
+    $blogs = Blog::orderBy('id', 'desc')->get();
     return view('blog')->with(['page_name' => 'blog', 'blogs' => $blogs]);
   }
 

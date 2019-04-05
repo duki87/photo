@@ -3,9 +3,13 @@
   <!-- Container Starts -->
   <div class="container">
     <div class="section-header">
-      <h2 class="section-title">Najnoviji tekstovi na blogu</h2>
+      <h2 class="section-title" style="color:white">Najnoviji tekstovi na blogu</h2>
       <hr class="lines">
-      <p class="section-subtitle">Procitajte nase tekstove o najnovijim desavanjima iz oblasti fotografije.</p>
+      <p class="section-subtitle" style="color:grey">
+        Procitajte nase tekstove o najnovijim desavanjima iz oblasti fotografije.
+        <br>
+        Pogledajte sve tekstove u sekciji <a class="btn-link" href="{{route('front.blogs')}}">BLOG</a>
+      </p>
     </div>
     <div class="row">
       @if(isset($blogs))

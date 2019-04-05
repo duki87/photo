@@ -1437,10 +1437,10 @@ footer {
 }
 
 .btn-categories {
-  border: 1px solid #66ff33;
-  background: #66ff33;
+  border: 1px solid #ffff66;
+  background: #ffff66;
   position: relative;
-  color: #000000;
+  color: black !important;
   z-index: 1;
   border-radius: 30px;
 }
@@ -1449,13 +1449,13 @@ footer {
   border: 1px solid #66ff33;
   background: #66ff33;
   position: relative;
-  color: #000000;
+  color: black;
   z-index: 1;
   border-radius: 30px;
 }
 
 .btn-categories:hover {
-  color: #fff;
+  color: black;
   background: #33b391;
   border-color: #33b391;
   transition: all .50s ease-in-out;
@@ -1501,4 +1501,9 @@ footer {
   background-color: #ffff66;
   color:black;
   cursor: pointer;
+}
+
+.lnr-custom {
+  background-color: #ffff66 !important;
+  color:black !important;
 }

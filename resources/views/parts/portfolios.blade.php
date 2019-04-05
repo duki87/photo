@@ -3,9 +3,11 @@
   <!-- Container Starts -->
   <div class="container">
     <div class="section-header">
-      <h2 class="section-title">Our Work</h2>
+      <h2 class="section-title" style="color:white">Naši radovi</h2>
       <hr class="lines" style="color:white">
-      <p class="section-subtitle">Select category. <br> Here you can see our photos.</p>
+      <p class="section-subtitle" style="color:grey">Kliknite na kategoriju da pogledate neke od naših fotografija.
+        <br> U galeriji možete videti još fotografija razvrstanih po albumima.
+      </p>
     </div>
     <div class="row">
       <div class="col-md-12">
@@ -13,23 +15,23 @@
         <div class="controls text-center">
 
           <a class="filter btn btn-categories" data-filter=".all" id="all-works">
-            All
+            <i class="fas fa-cubes"></i> Sve
           </a>
 
           <a class="filter btn btn-categories" data-filter=".nature">
-            Nature
+            <i class="fas fa-tree"></i> Priroda
           </a>
           <a class="filter btn btn-categories" data-filter=".cars">
-            Cars
+            <i class="fas fa-car"></i> Automobili
           </a>
           <a class="filter btn btn-categories" data-filter=".animals">
-            Animals
+            <i class="fas fa-paw"></i> Životinje
           </a>
           <a class="filter btn btn-categories" data-filter=".city">
-            City
+            <i class="fas fa-city"></i> Gradovi
           </a>
           <a class="filter btn btn-categories" data-filter=".portraits">
-            Portraits
+            <i class="fas fa-portrait"></i> Portreti
           </a>
         </div>
         <!-- Portfolio Controller/Buttons Ends-->

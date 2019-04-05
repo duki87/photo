@@ -19,7 +19,7 @@
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <a href="index.html" class="navbar-brand" style="width:60%">
+      <a href="{{route('front.index')}}" class="navbar-brand" style="width:60%">
         <img src="{{asset('img/logo-2.png')}}" class="img-fluid" alt="">
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">

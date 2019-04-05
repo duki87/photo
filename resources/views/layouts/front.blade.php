@@ -47,7 +47,7 @@
 
     <!-- Go To Top Link -->
     <a href="#" class="back-to-top">
-      <i class="lnr lnr-arrow-up"></i>
+      <i class="lnr lnr-arrow-up lnr-custom"></i>
     </a>
 
     <div id="loader">

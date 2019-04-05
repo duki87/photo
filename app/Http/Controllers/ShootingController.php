@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Shooting;
+use Notification;
 use Illuminate\Http\Request;
+use App\Notifications\ShootingNotification;
 
 class ShootingController extends Controller
 {
@@ -13,7 +15,7 @@ class ShootingController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $shootings = Shooting::paginate(5);
+        $shootings = Shooting::orderBy('id', 'desc')->paginate(5);
         return view('admin.shootings', ['shootings' => $shootings, 'page_name' => 'shootings']);
     }
 
@@ -33,6 +35,7 @@ class ShootingController extends Controller
         $shooting->date = $request->date;
 
         if($shooting->save()) {
+          Notification::route('mail', 'dusanmarinkovic@hotmail.com')->notify(new ShootingNotification($request->name, $request->email, $request->phone, $request->city, $request->place, $request->event, $request->date));
           return response()->json(['success'=>'SHOOT_ADD']);
         }
     }
